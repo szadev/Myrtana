@@ -1,0 +1,14 @@
+{
+    "name": "Myrtana.Rules",
+    "rootNamespace": "Myrtana.Rules",
+    "references": ["Myrtana.Core"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

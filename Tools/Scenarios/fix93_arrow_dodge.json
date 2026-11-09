@@ -1,0 +1,19 @@
+{
+  "name": "fix93_arrow_dodge",
+  "verifies": "fix-93 (owner: 'NPC archers always hit; in the original you could dodge'): an NPC's arrow is aimed once at release at where the hero is (G3 _AI_Shoot PathStyle Line; gCProjectile_PS::ShootIteration re-aims only Missile) and flies straight on: standing, the hero is hit; a step aside after the release dodges it.",
+  "fresh": true,
+  "timeout": 180,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_1; calm radius=80",
+    "hp hero 5000 max=5000",
+    "spawn Orc_Scout_02 attitude=neutral dist=16 side=front as=archer",
+    "engage $archer hero",
+    "log -- standing still: the arrows hit",
+    "arrowdodge $archer shots=3 dodge=0 secs=60",
+    "log -- a run sideways at each release: the arrows miss",
+    "arrowdodge $archer shots=4 dodge=1 step=0.5 secs=80",
+    "expect arrowhits:hero>=2"
+  ],
+  "notes": "Orc_Scout_02 shoots from >10 m (combat_ai weaponChoice). The flight of 16 m at 27.8 m/s takes ~0.58 s; a 0.5 s side run (~2 m) takes the hero out of the line. If the archer walks closer than 7 m it draws its melee weapon: check the log. Before fix-93 the arrows were re-aimed every frame and hit whatever he did."
+}

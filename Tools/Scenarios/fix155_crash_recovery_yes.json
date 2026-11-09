@@ -1,0 +1,30 @@
+{
+  "name": "fix155_crash_recovery_yes",
+  "verifies": "fix-155 [owner]: crash recovery, the Yes answer - after an unclean exit (simulated) with a recovery snapshot newer than the quicksave the title's question is asked; Yes copies the snapshot to the visible slot 'recovered' (load list 'Восстановление'), loads it and removes the hidden one; Continue then picks 'recovered'. A normal save made after the snapshot suppresses the question",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; notips; time 12; lang Russian Russian",
+    "tp spot=flat_field_1; calm radius=60",
+    "autosave every=0",
+    "recovery every=600",
+    "autosave quick=1",
+    "wait 1.2",
+    "recovery",
+    "expect recovery:exists",
+    "expect recovery:kb>0",
+    "recovery offer=1",
+    "expect recovery:asked",
+    "recovery reply=yes",
+    "expect slot:recovered",
+    "expect !recovery:exists",
+    "expect continue:slot=recovered",
+    "menu page=load",
+    "wait 0.5",
+    "shot name=fix155_loadlist_recovered",
+    "menu page=close",
+    "autosave every=600",
+    "recovery every=120"
+  ],
+  "notes": "Check the load list shot: rows quicksave, (autosave if one exists on disk), 'Восстановление', then the numbered saves. Real crash test: see fix155_crash_recovery notes."
+}

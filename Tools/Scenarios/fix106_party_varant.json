@@ -1,0 +1,22 @@
+{
+  "name": "fix106_party_varant",
+  "verifies": "fix-106 (owner: Cyrus in the party attacked Iomar on the way to Ortega's camp; log '[party] lookout Cyrus engages Iomar'): a companion never attacks on sight. CP AssessActivePerception (0x100295f0) skips the hostile step for an NPC whose party leader is the player unless it is Summoned, and an NPC in AIMode PlayerParty (ZS_FollowPlayer) senses only the player (sense test 0x10008bd0). Cyrus (Orc-aligned Kap Dun mercenary, politically Hostile to rebels) walks past the rebel Iomar with the hero for 15 s and does not fight him.",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp npc=Iomar dist=18 side=front",
+    "calm only=Iomar",
+    "bring Cyrus dist=2 side=back",
+    "party Cyrus add",
+    "wait 1",
+    "expect party:Cyrus=Party",
+    "expect politics:Cyrus=Friendly/Hostile",
+    "tp npc=Iomar dist=4 side=front",
+    "wait 10",
+    "expect fighting:Cyrus=False",
+    "expect state:Iomar=Alive",
+    "party Cyrus remove"
+  ],
+  "notes": "Iomar is calmed so only Cyrus' own decision is tested. Per G3 the reverse can happen: Iomar (Reb, in his routine) is politically Hostile to an Orc-aligned party member (CP GetAttitude keeps political attitudes for Party members; only Controlled ones are Neutral) and his own AssessActivePerception may attack Cyrus on sight (20 m, FOV + LOS); Cyrus then fights back. politics:X = attitude toward a probe orc / probe rebel (ScenarioRunner.Fix94.cs). Before fix-106 PartyDriver's look-out engaged Iomar within 1-2 s ('[party] lookout Cyrus engages Iomar'). fix-184 (regress-1021b: the straight walkto ran into G3_Object_Waggon_01 at 576,9 between the hero and Iomar, whose routine spot varies): the hero is put 4 m in front of Iomar and Cyrus follows him there."
+}

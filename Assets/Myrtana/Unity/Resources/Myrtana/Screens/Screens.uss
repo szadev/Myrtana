@@ -1,0 +1,171 @@
+/* Temporary screens (clean look); the G3 skin replaces this sheet later. Layout only, no logic. */
+
+.screen {
+    position: absolute;
+    left: 12%; right: 12%; top: 8%; bottom: 10%;
+    padding: 22px 28px 16px 28px;
+    background-color: rgba(14, 12, 9, 0.92);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgba(200, 170, 110, 0.5);
+    flex-direction: column;
+}
+
+.screen-title {
+    font-size: 30px;
+    -unity-font-style: bold;
+    color: rgb(230, 196, 128);
+    margin-bottom: 12px;
+}
+
+.screen-body {
+    flex-grow: 1;
+    flex-direction: row;
+}
+
+.screen-column {
+    flex-grow: 1;
+    flex-basis: 0;
+    margin-right: 24px;
+}
+
+.screen-section-title {
+    font-size: 22px;
+    -unity-font-style: bold;
+    color: rgb(222, 184, 112);
+    margin-top: 10px;
+    margin-bottom: 6px;
+    border-bottom-width: 1px;
+    border-color: rgba(200, 170, 110, 0.35);
+}
+
+.screen-row {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 2px 4px;
+}
+
+.screen-row-label {
+    font-size: 19px;
+    color: rgb(215, 208, 190);
+}
+
+.screen-row-value {
+    font-size: 19px;
+    color: rgb(250, 245, 230);
+    -unity-text-align: middle-right;
+}
+
+.screen-hint {
+    font-size: 15px;
+    color: rgb(150, 142, 128);
+    -unity-text-align: middle-right;
+    margin-top: 8px;
+}
+
+.screen-list {
+    flex-grow: 0;
+    width: 36%;
+    margin-right: 20px;
+}
+
+.screen-detail {
+    flex-grow: 1;
+}
+
+.screen-item {
+    font-size: 19px;
+    color: rgb(215, 208, 190);
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    -unity-text-align: middle-left;
+    white-space: normal;
+    padding: 3px 8px;
+    margin: 1px 0;
+    border-radius: 4px;
+}
+
+.screen-item:hover,
+.screen-item--selected {
+    background-color: rgba(200, 160, 90, 0.28);
+    color: rgb(255, 250, 235);
+}
+
+.screen-item--dim {
+    color: rgb(150, 142, 128);
+}
+
+.quest-line {
+    font-size: 19px;
+    color: rgb(240, 234, 220);
+    white-space: normal;
+    margin-bottom: 6px;
+}
+
+.quest-line-speaker {
+    -unity-font-style: bold;
+    color: rgb(222, 184, 112);
+}
+
+.screen-empty {
+    font-size: 20px;
+    color: rgb(150, 142, 128);
+}
+
+.screen-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.screen-gold {
+    font-size: 20px;
+    color: rgb(240, 210, 120);
+}
+
+.trade-list {
+    flex-grow: 1;
+}
+
+.item-row {
+    flex-direction: row;
+    align-items: center;
+    padding: 2px 6px;
+    margin: 1px 0;
+    border-radius: 4px;
+}
+
+.item-row:hover,
+.item-row--selected {
+    background-color: rgba(200, 160, 90, 0.28);
+}
+
+.item-row--worn .item-row-name {
+    color: rgb(150, 220, 140);
+}
+
+.item-row-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+}
+
+.item-row-name {
+    flex-grow: 1;
+    font-size: 18px;
+    color: rgb(225, 218, 200);
+    white-space: normal;
+}
+
+.item-row-price {
+    font-size: 18px;
+    color: rgb(240, 210, 120);
+    min-width: 70px;
+    -unity-text-align: middle-right;
+}
+
+.item-detail-icon {
+    width: 96px;
+    height: 96px;
+    margin-bottom: 8px;
+}

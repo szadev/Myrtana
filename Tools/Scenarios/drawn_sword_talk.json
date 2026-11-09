@@ -1,0 +1,21 @@
+{
+  "name": "drawn_sword_talk",
+  "verifies": "polish-3 #4: with a drawn sword an NPC's Important info does not start (warnings instead); holstered it starts",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; god; time 20",
+    "tp spot=flat_field_1; calm radius=60 except=Kent",
+    "forget BPANKRATZ31157",
+    "draw",
+    "bring Kent dist=3; wait 1; tp npc=Kent dist=2 side=front; wait 3",
+    "probe Kent",
+    "expect !dialog; expect !given:BPANKRATZ31157; expect drawn",
+    "sheathe; wait 3",
+    "bring Kent dist=3; wait 1; tp npc=Kent dist=2 side=front",
+    "wait until=given:BPANKRATZ31157 timeout=8",
+    "expect given:BPANKRATZ31157",
+    "abort"
+  ],
+  "notes": "runner-16: Kent walks his routine (Travelling) after bring/at noon and freeze does not hold him; re-tp next to him while drawn. Kent at his SleepGround station (noon) cannot talk (asleep). fix-184 (regress-1021b: after the sheathe the tp in front of the walking Kent got no talk in 8 s, while talk_swim's 'bring' starts it at once): Kent is brought to the hero facing him (bring re-adds him in his view) in both halves, so the drawn half is not passed by a Kent who never looked. fix-188 (b1022b: no talk after the sheathe): Kent brought next to the hero walks off at once (bring restarts his routine: Travelling, turned away, never notices the hero), and a Kent already within the calm radius was calmed (calm NPCs perceive nothing) -> calm except=Kent; Kent brought, then the hero put in front of him (tp npc=Kent side=front). The tp op finishes a talk that opened meanwhile, so the check is that his Important info was given (Kent started it; the hero never asks). Editor inline 3/3."
+}

@@ -1,0 +1,44 @@
+{
+  "name": "fix89_draw_run",
+  "loadout": "own",
+  "verifies": "fix-89: drawing and sheathing while running does not crumple the hero: the arm-only draw overlays drive only the arms (G3 overlay mixing), so the pelvis-to-head distance and the spine bend stay inside the run's own range (1H sword, fists, bow)",
+  "fresh": true,
+  "timeout": 240,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_1; calm radius=60",
+    "wait 1",
+
+    "log -- 1H sword: run, draw and sheathe while running",
+    "equip It_1H_Sword_01",
+    "torsoprobe on label=run_1h trace=1",
+    "move fwd secs=1.5",
+    "drawtrace melee move=fwd",
+    "torsoprobe off",
+    "expect torso:overlayframes>5",
+    "expect torso:shrink<0.02",
+    "expect torso:bend<4",
+
+    "log -- fists",
+    "torsoprobe on label=run_fist",
+    "move fwd secs=1.5",
+    "drawtrace fist move=fwd",
+    "torsoprobe off",
+    "expect torso:overlayframes>5",
+    "expect torso:shrink<0.02",
+    "expect torso:bend<4",
+
+    "log -- bow (left hand)",
+    "learn Perk_Bow_1",
+    "give It_Bow_01",
+    "equip It_Bow_01",
+    "equip Arrow",
+    "torsoprobe on label=run_bow",
+    "move fwd secs=1.5",
+    "drawtrace ranged move=fwd",
+    "torsoprobe off",
+    "expect torso:overlayframes>5",
+    "expect torso:shrink<0.02",
+    "expect torso:bend<4"
+  ]
+}

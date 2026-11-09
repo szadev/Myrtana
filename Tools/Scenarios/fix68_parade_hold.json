@@ -1,0 +1,16 @@
+{
+  "name": "fix68_parade_hold",
+  "verifies": "fix-68 #2: the block stays up for as long as the block key is held (8 s here; CP AAI's 2.5 s drop is off by the owner's decision) and goes down on the release",
+  "fresh": true,
+  "timeout": 60,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_1; calm radius=60",
+    "draw",
+    "hold block secs=8 parade=1",
+    "wait 0.5",
+    "expect !parade",
+    "hold block secs=3 parade=1"
+  ],
+  "notes": "hold logs 'action at release=Parade, parade up'. parade=1 fails the step when the block is down at the release."
+}

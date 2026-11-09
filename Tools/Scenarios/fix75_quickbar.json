@@ -1,0 +1,29 @@
+{
+  "name": "fix75_quickbar",
+  "verifies": "fix-75 #2/#6: in the inventory the digit keys put the selected stack on the quick bar (G3 OnPlayerAssignStackKey): weapons, ammo, food, potions, torches go on, a ring is refused (eff_inv_deny_01); an occupied slot gets the new stack, the same stack moves out of its old slot; hovering a stack selects it and shows it in the item panel [owner]; the bar is saved",
+  "fresh": true,
+  "timeout": 90,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_1; calm radius=60",
+    "invquick It_1H_Sword_01 digit=1",
+    "expect quickslot:It_1H_Sword_01=0",
+    "invquick It_Apple digit=2 hover=1",
+    "expect quickslot:It_Apple=1",
+    "invquick It_Potion_Health digit=2 hover=1",
+    "expect quickslot:It_Potion_Health=1",
+    "expect quickslot:It_Apple=-1",
+    "invquick It_Potion_Health digit=5",
+    "expect quickslot:It_Potion_Health=4",
+    "invquick It_Artefact_Ring_01 digit=6 expect=refused",
+    "expect quickslot:It_Artefact_Ring_01=-1",
+    "invquick It_Bread digit=0 hover=1",
+    "expect quickslot:It_Bread=9",
+    "save slot=fix75_quickbar",
+    "load slot=fix75_quickbar",
+    "expect quickslot:It_1H_Sword_01=0",
+    "expect quickslot:It_Potion_Health=4",
+    "expect quickslot:It_Bread=9"
+  ],
+  "notes": "quickslot:<item> is the 0-based slot (key 1 = 0 ... key 0 = 9), -1 = not on the bar. invquick fails when the item panel does not show the selected/hovered stack."
+}

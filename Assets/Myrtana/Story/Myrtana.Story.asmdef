@@ -1,0 +1,14 @@
+{
+    "name": "Myrtana.Story",
+    "rootNamespace": "Myrtana.Story",
+    "references": ["Myrtana.Core", "Myrtana.Rules"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

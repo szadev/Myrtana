@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "parts": [
+    {
+      "name": "myrtana-pack-01.zip",
+      "size": 1889159883,
+      "sha256": "e7d71908f09c585e68944929d7e222ab1d8b00034687331eae0d344e71cfa529",
+      "url": "https://github.com/szadev/Myrtana-pack/releases/download/v1/myrtana-pack-01.zip"
+    },
+    {
+      "name": "myrtana-pack-02.zip",
+      "size": 1898332333,
+      "sha256": "d76e4eab7216b43c7e5af2e819ae804d967e22b5546477c631d9b0c9ab054ab1",
+      "url": "https://github.com/szadev/Myrtana-pack/releases/download/v1/myrtana-pack-02.zip"
+    },
+    {
+      "name": "myrtana-pack-03.zip",
+      "size": 1896558327,
+      "sha256": "c5ecde2e10a4c02ed794886db36ccb54f25dd865da83b9f01af40237ef85d913",
+      "url": "https://github.com/szadev/Myrtana-pack/releases/download/v1/myrtana-pack-03.zip"
+    },
+    {
+      "name": "myrtana-pack-04.zip",
+      "size": 1892192446,
+      "sha256": "3c86a7be524d4c159d7e36b3634f1a26bbe70648134c67f1c31d9b99d7aedde5",
+      "url": "https://github.com/szadev/Myrtana-pack/releases/download/v1/myrtana-pack-04.zip"
+    },
+    {
+      "name": "myrtana-pack-05.zip",
+      "size": 1893319953,
+      "sha256": "bf536b2ecbcec5359ae2268449f64ac23e42bcdd2970a400c3f4d24f8f2e1145",
+      "url": "https://github.com/szadev/Myrtana-pack/releases/download/v1/myrtana-pack-05.zip"
+    },
+    {
+      "name": "myrtana-pack-06.zip",
+      "size": 1898298176,
+      "sha256": "92fabce29a67ba1d23b2d2e37e37face274459f74a5da33be31b5809dc7b59bb",
+      "url": "https://github.com/szadev/Myrtana-pack/releases/download/v1/myrtana-pack-06.zip"
+    },
+    {
+      "name": "myrtana-pack-07.zip",
+      "size": 1505889125,
+      "sha256": "f9ea41808c0d6d219da1bce0ae1304fda3e2f2309881609e2188f8e4a86854f6",
+      "url": "https://github.com/szadev/Myrtana-pack/releases/download/v1/myrtana-pack-07.zip"
+    }
+  ]
+}

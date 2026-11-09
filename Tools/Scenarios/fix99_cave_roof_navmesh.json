@@ -1,0 +1,24 @@
+{
+  "name": "fix99_cave_roof_navmesh",
+  "verifies": "fix-99 #2: no NPC NavMesh on the back of cave roofs — the Reddock cave (Dungeon_07) floor at (706.52, 33.9, -77.06) has NavMesh, the top of its roof inside the rock at 39.9 (where a varan was put back by the fall rule: 'fell 6,1 m: back to the NavMesh at (706.52, 39.98, -77.06)') has none; the same in the Kap Dun cave (Level_07 roof top 27.64 over the floor 15.29, goblins 'back to the NavMesh at (452.38, 27.86, -318.15)')",
+  "fresh": true,
+  "timeout": 240,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp 706.52,33.95,-77.06",
+    "wait until=navat:706.52,33.90,-77.06 timeout=90",
+    "probe",
+    "expect navat:706.52,33.90,-77.06",
+    "expect !navat:706.52,39.95,-77.06",
+    "expect !navat:711.69,40.25,-80.72",
+    "expect !navat:677.55,48.05,-72.49",
+    "expect navonesided>0",
+    "shot fix99_reddock_cave look=706.52,34.9,-70",
+    "tp 452.38,15.35,-318.15",
+    "wait until=navat:452.38,15.30,-318.15 timeout=90",
+    "expect navat:452.38,15.30,-318.15",
+    "expect !navat:452.38,27.70,-318.15",
+    "expect !navat:462.51,22.80,-316.63"
+  ],
+  "notes": "CellNavMeshes bakes from the cells' MeshColliders; G3CollisionBuilder builds triangle colliders two-sided (_2s), so before fix-99 the reversed copy of every cave roof faced up and Recast made walkable NavMesh on it inside the rock (16 m of 'headroom' up to the landscape). G3.Player.NavFacingRules keeps per near-horizontal triangle only the copy facing like the object's render mesh (G3Cli collision navfacing: world 4.87 M pairs, 753 k ceiling back copies dropped, 70 k without a render match stay two-sided). Columns from G3Cli collision column x z."
+}

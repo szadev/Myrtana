@@ -1,0 +1,29 @@
+{
+    "name": "Myrtana.Tests",
+    "rootNamespace": "Myrtana.Tests",
+    "references": [
+        "Myrtana.Core",
+        "Myrtana.Rules",
+        "Myrtana.Simulation",
+        "Myrtana.Story",
+        "Myrtana.Session",
+        "Myrtana.Import.G3",
+        "Myrtana.Ui",
+        "G3.Formats",
+        "G3.Player.Logic",
+        "G3.Effects.Logic",
+        "G3.Weather.Logic",
+        "G3.Unity",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": ["Editor"],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": ["nunit.framework.dll"],
+    "autoReferenced": false,
+    "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

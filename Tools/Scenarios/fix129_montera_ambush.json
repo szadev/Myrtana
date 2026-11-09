@@ -1,0 +1,26 @@
+{
+  "name": "fix129_montera_ambush",
+  "verifies": "fix-129 (owner: Daryl_OneByOneOrc near Montera; the lured orc guard sat peacefully at the rebels' campfire and the hero's hit on it turned the rebels on the hero): Daryl and RebWarrior_05#3ecf9c3f are Reb but members of the orc enclave Montera; G3 GetPoliticalAttitude reads the own alignment, so they and the Montera orcs are enemies. The orc sent to the ambush point (routine RebAmbush, flag Montera_Orc_03_Treat) is attacked by the rebels and does not survive; the rebels stay non-hostile to the hero.",
+  "fresh": true,
+  "timeout": 300,
+  "steps": [
+    "safe fame=0; god; notips; time 12",
+    "quest Daryl_OneByOneOrc Running",
+    "flag Montera_Orc_03_Treat",
+    "tp npc=Daryl dist=7",
+    "wait 2",
+    "expect politics:Daryl=Hostile/Friendly",
+    "expect loyal:Daryl=False",
+    "expect attitudeto:Daryl,Montera_Orc_03=Hostile",
+    "expect attitudeto:Montera_Orc_03,Daryl=Hostile",
+    "expect attitudeto:RebWarrior_05#3ecf9c3f,Montera_Orc_03=Hostile",
+    "bring Montera_Orc_03 near=place:Montera_RebAmbush_4Orc03 dist=1",
+    "wait until=state:Montera_Orc_03!=Alive timeout=180",
+    "expect state:Montera_Orc_03!=Alive",
+    "expect attitude:Daryl!=Hostile",
+    "expect attitude:RebWarrior_05#3ecf9c3f!=Hostile",
+    "expect target:Daryl!=player",
+    "expect target:RebWarrior_05#3ecf9c3f!=player"
+  ],
+  "notes": "attitudeto:X,Y = X's attitude toward Y (ScenarioRunner.Probe.cs, fix-129); politics:X = toward a probe orc / probe rebel without enclave (fix-94). Before fix-129 politics:Daryl was Friendly/Friendly (the enclave's Orc), the orc lived on at the fire. If the orc reaches the ambush point within 5 m before the rebels get it, its Important info (BPANKRATZ3860) talks to the hero and attacks him (Enemy); the hero has god mode. fix-135: the rebels do attack at once (Daryl and the orc fight from the bring on), but one rebel holds the attack token on an NPC target (CombatCoordinator, G3 Active/Passive) and the duel of two level-10+ warriors takes ~85 s (editor run 2026-10-19): the 60 s wait was too short."
+}

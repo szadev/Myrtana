@@ -1,0 +1,32 @@
+{
+  "name": "companion_touch",
+  "verifies": "fix-59: a companion fighting next to the hero never hurts him (G3 OnTouchDamage bystander filter + DoLogicalDamage friendly fire): Gorn in the party fights an orc right beside the hero; every touch of Gorn's blade on the hero is dropped (touchwatch: spared[Bystander|FriendlyFire], hurtby:Gorn=0, no stumble), also the follow-through swings after the orc went down (no target any more)",
+  "fresh": true,
+  "timeout": 240,
+  "notes": "The orc is neutral to the hero (it fights Gorn only), so its own stray blows on the hero are dropped as well (Neutral better than Hostile). No god mode: the GodMode gate would hide the damage. The hero stands between Gorn and the orc with nothing drawn. touchwatch logs each landed hit on the hero at once ('touchwatch: X -> hero ...') and the tally at 'touchwatch off'.",
+  "steps": [
+    "safe; notips; time 12",
+    "tp spot=flat_field_3; calm radius=80",
+    "hp hero 1000 max=1000",
+    "bring Gorn dist=1.2 side=left",
+    "party Gorn add",
+    "spawn Orc_Elite_01 attitude=neutral dist=1.4 side=right as=orc",
+    "hp $orc 3000",
+    "touchwatch",
+    "engage Gorn $orc",
+    "engage $orc Gorn",
+    "wait 25 until=touches:Gorn>=3 soft=1",
+    "wait 10",
+    "expect hurtby:Gorn=0",
+    "expect hurtby:$orc=0",
+    "expect hp:hero=1000",
+    "log -- the orc goes down: Gorn's swings that are still running have no target any more",
+    "hp $orc 5",
+    "wait 15 until=state:$orc!=Alive soft=1",
+    "wait 3",
+    "expect hurtby:Gorn=0",
+    "expect hp:hero=1000",
+    "touchwatch off",
+    "party Gorn remove"
+  ]
+}

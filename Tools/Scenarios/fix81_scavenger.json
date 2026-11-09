@@ -1,0 +1,30 @@
+{
+  "name": "fix81_scavenger",
+  "verifies": "fix-81 #2: a scavenger bites at most about once a second (G3: Hit 0.4 s + _AI_QuickAttack's 0.1 s wait, then SetLastHit, then MinHitDuration 0.5 s; was 0.5 s from the start) and its bites go through the raised block (CanParadeMoveOf: an attacker in fist mode that is not humanoid cannot be parried; every animal fights with PhysicalFist), while a Minecrawler's claws are parried (IsInFistMode is false for it)",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_1; calm radius=60",
+    "draw",
+    "spawn Scavenger attitude=hostile dist=2.5 side=front as=s",
+    "focus $s",
+    "wait 2",
+    "touchwatch",
+    "hold block secs=10",
+    "touchwatch off",
+    "expect touches:$s>=3",
+    "expect touches:$s<=11",
+    "expect hurtby:$s>0",
+    "despawn $s",
+    "spawn Minecrawler attitude=hostile dist=8 side=front as=m",
+    "focus $m",
+    "touchwatch",
+    "hold block secs=10",
+    "touchwatch off",
+    "expect touches:$m>=2",
+    "expect hurtby:$m=0",
+    "focus off"
+  ],
+  "notes": "touches = bites/claws that reached the hero while he held the block (10 s / 8 s), hurtby = their damage (god mode refills HP). Before fix-81 the scavenger bit up to twice a second (touches ~15-20 in 10 s). The Minecrawler's blocked hits cost stamina only (AAI: no shortfall damage). fix-85: the Minecrawler starts 8 m away and the block is raised before it closes in; at 2.5 m + wait 2 its first quick claw (D=1, editor-runner-37) landed before the hold step raised the parade, so hurtby was 21 although the following claws were blocked."
+}

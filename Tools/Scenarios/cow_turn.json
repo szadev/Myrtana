@@ -1,0 +1,19 @@
+{
+  "name": "cow_turn",
+  "verifies": "fix-4 #3 (ConversationStaging): talking to a cow/pig/bison does not turn the animal to face the hero",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; god; time 12",
+    "tp spot=cow",
+    "calm radius=40",
+    "tp npc:$spot.npc dist=2 side=right",
+    "wait 1",
+    "probe $spot.npc",
+    "talk $spot.npc",
+    "wait 3",
+    "probe hero",
+    "expect turned:$spot.npc<20",
+    "abort"
+  ]
+}

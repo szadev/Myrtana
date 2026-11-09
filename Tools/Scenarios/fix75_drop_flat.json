@@ -1,0 +1,27 @@
+{
+  "name": "fix75_drop_flat",
+  "verifies": "fix-75 #1: a downed fighter's weapon lies flat on the ground (G3: DropItemsFromSlot at the hand matrix, the item's rigid body settles on its widest side), not upright stuck in the ground: its long mesh axis within 20 deg of the ground plane, its lowest point -3..+10 cm from the ground",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_1; calm radius=60",
+    "give It_1H_Sword_01",
+    "equip It_1H_Sword_01",
+    "draw",
+    "spawn Kent attitude=neutral dist=3 as=v",
+    "engage $v hero",
+    "wait 6 until=drawn:$v",
+    "fight $v hp=5 secs=30 sheathe=0",
+    "wait 2",
+    "dropprobe min=1",
+    "shot fix75_drop_flat look=$v",
+    "spawn Orc_Elite_01 attitude=neutral dist=4 side=left as=orc",
+    "engage $orc hero",
+    "wait 6 until=drawn:$orc",
+    "fight $orc hp=5 secs=30",
+    "wait 2",
+    "dropprobe min=2"
+  ],
+  "notes": "The fight op lowers the NPC's HP and melees it down; DropHandItems drops its drawn weapon as a world item (CombatPresenter.Drop -> WorldItems.Drop -> WorldItemViews -> WorldItemRest). dropprobe logs per item: long axis angle to the ground, up axis angle to the normal, gap. Before fix-75 the sword stood upright (long axis ~90 deg). fix-184 (regress-1021b: Kent went down at the first swing, 0.7 s, his sword still sheathed, so nothing dropped): each victim is turned on the hero and has its weapon drawn before the fight."
+}

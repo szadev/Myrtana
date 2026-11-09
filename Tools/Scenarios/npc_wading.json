@@ -1,0 +1,22 @@
+{
+  "name": "npc_wading",
+  "verifies": "polish-3 #6: a human follower crossing 1.5-1.9 m deep water wades (G3NpcAnimator.Wading, Hero_Wade_* keys)",
+  "fresh": true,
+  "timeout": 120,
+  "notes": "Ford = 1.7 m column between two banks ~24 m apart, ~45 m from Abe's spawn (Vangard). The hero teleports across; Abe follows through the water.",
+  "steps": [
+    "safe; god; time 12",
+    "tp spot=wade_ford_2.shore",
+    "bring Abe dist=2",
+    "party Abe add",
+    "calm radius=60",
+    "wait 2",
+    "tp spot=wade_ford_2.far",
+    "wait until=wading:Abe timeout=25",
+    "probe Abe",
+    "expect key:Abe~Wade",
+    "shot scn_npc_wading look=Abe",
+    "wait until=dist:Abe<6 timeout=25",
+    "party Abe remove"
+  ]
+}

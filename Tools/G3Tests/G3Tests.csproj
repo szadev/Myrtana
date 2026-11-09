@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Fast test loop without the Unity Editor: compiles the same pure sources Unity compiles (G3.Formats and the
+    Myrtana.* assemblies with noEngineReferences) plus the EditMode test sources, and runs them with NUnit.
+    Run: dotnet test Tools/G3Tests
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <LangVersion>9.0</LangVersion>
+    <IsPackable>false</IsPackable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <MyrtanaRoot Condition="'$(MyrtanaRoot)' == ''">../../Assets/Myrtana</MyrtanaRoot>
+    <NoWarn>$(NoWarn);CS0618</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../Assets/G3/Formats/**/*.cs" />
+    <Compile Include="../../Assets/G3/Unity/Runtime/Player/Logic/**/*.cs" />
+    <Compile Include="../../Assets/G3/Unity/Runtime/Effects/Logic/**/*.cs" />
+    <Compile Include="../../Assets/G3/Unity/Runtime/Environment/Logic/**/*.cs" />
+    <Compile Include="../../Assets/G3/Unity/Runtime/Streaming/Logic/**/*.cs" />
+    <Compile Include="../../Assets/G3/Unity/Runtime/Audio/Logic/**/*.cs" />
+    <Compile Include="../../Assets/G3/Unity/Runtime/Remaster/Logic/**/*.cs" />
+    <Compile Include="../../Assets/G3/Unity/Runtime/Characters/Logic/**/*.cs" />
+    <Compile Include="$(MyrtanaRoot)/Core/**/*.cs" />
+    <Compile Include="$(MyrtanaRoot)/Rules/**/*.cs" />
+    <Compile Include="$(MyrtanaRoot)/Simulation/**/*.cs" />
+    <Compile Include="$(MyrtanaRoot)/Story/**/*.cs" />
+    <Compile Include="$(MyrtanaRoot)/Session/**/*.cs" />
+    <Compile Include="$(MyrtanaRoot)/Import.G3/**/*.cs" />
+    <Compile Include="$(MyrtanaRoot)/Ui/**/*.cs" />
+    <Compile Include="$(MyrtanaRoot)/Tests/Core/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+{
+  "name": "fix84_teach_requirements",
+  "verifies": "fix-84 item 2: Norris (Reddock's combat trainer) refuses a lesson the hero cannot learn yet and the HUD says why, as G3 gCInventory_PS::CanLearnSkill: 'Не хватает 50 очков Сила' / 'Отсутствует навык: ...', then GO_NoLearnRequirements and Norris's 'NotReadyYet'. A fresh hero has STR 100, DEX 100 and Perk_1H_1.",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; god; notips; time 12",
+    "expect teachshort:Perk_1H_2=STR-50",
+    "expect teachshort:Perk_1H_3=Skill:Perk_1H_2,STR-100",
+    "expect teachshort:Perk_Axe_1=STR-50",
+    "expect teachshort:Perk_Shield_1=STR-25",
+    "expect teachshort:Perk_Crossbow_1=none",
+    "tp npc:Norris dist=1.5",
+    "log -- MANUAL: Norris > 'Ты научишь меня драться?' > 'Я хочу стать сильным бойцом на мечах': HUD 'Не хватает 50 очков Сила', 'Нет условий, необходимых для обучения!', Norris: 'Ты еще не готов.'"
+  ],
+  "notes": "Needs the content re-imported (the teach refusal gains reportLearnShortfalls + sayShared NotReadyYet). The HUD lines are checked by eye in the log/screen; the rule itself by Myrtana.Tests TeachShortfallTests. SKALVERAM334 = the hero's 'Ты научишь меня драться?', SKALVERAM31098 = 'Я хочу стать сильным бойцом на мечах' (Perk_1H_2).  The refusal flow itself is covered by TeachShortfallTests (Myrtana.Tests)."
+}

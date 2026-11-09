@@ -1,0 +1,32 @@
+{
+  "name": "fix94_slope_camera",
+  "verifies": "fix-94: with his back to a steep slope and the bow aimed, the camera is pressed against the slope as in G3 (thin trace, then 17.5 cm off the surface along its normal) and stays at least 0.6 m from the hero's eyes (G3 alpha 0.5); the hero is drawn whole, never headless: the first-person head culling only in real first person",
+  "fresh": true,
+  "timeout": 180,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_1; calm radius=80",
+    "give It_Bow_01",
+    "give Arrow 20",
+    "equip It_Bow_01",
+    "equip Arrow",
+    "draw ranged",
+    "wait 1",
+    "slopeback radius=200 min=45 max=70 near=1 far=2.5 pitch=0 secs=2",
+    "shot name=fix94_slope_level",
+    "expect slopefp=0",
+    "expect slopemineye>=0.6",
+    "expect slopehidden=0",
+    "expect heroview=full",
+    "slopeback radius=200 min=45 max=70 near=1 far=2.5 pitch=-25 secs=2",
+    "shot name=fix94_slope_up",
+    "expect slopefp=0",
+    "expect heroview!=firstperson",
+    "slopeback radius=200 min=45 max=70 near=1 far=2.5 pitch=25 secs=2",
+    "shot name=fix94_slope_down",
+    "expect slopefp=0",
+    "expect heroview!=firstperson",
+    "sheathe"
+  ],
+  "notes": "Before fix-94 the back leg was a 0.2 m sphere sweep that stopped 0.2 m / sin(grazing angle) short of a slope, and under a 0.6 m boom the hero switched to the first-person body view (head shadows only): a headless hero. G3 (gCCameraAI_PS::MaintainWallDistance, OnProcess) traces a ray, keeps 17.5 cm off the surface along its normal and fades the WHOLE hero by the camera's distance from his eyes (opaque >= 1 m, gone <= 0.2 m); the port hides him whole below alpha 0.4 (0.55 m eye distance). pitch: + looks down (camera higher), - up (camera lower, into the slope). The two last runs may legitimately hide the hero (very close), never show him headless. slopeback logs foot/slope/boom/eye min; check the shots for a whole hero and no clipping into the slope."
+}

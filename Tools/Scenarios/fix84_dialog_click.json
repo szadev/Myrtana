@@ -1,0 +1,19 @@
+{
+  "name": "fix84_dialog_click",
+  "verifies": "fix-84 item 1 (manual part): with the choice list open, a left click beside the rows or the click that skips the last line before the list appears does not run the highlighted choice; a click on a row and Enter do",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp npc:Norris dist=1.5",
+    "talk Norris",
+    "wait until=dialog timeout=8",
+    "lines max=20",
+    "expect options>0",
+    "log -- MANUAL: click beside the list / above it: the list stays; click a row: it runs",
+    "wait 1",
+    "expect options>0",
+    "abort"
+  ],
+  "notes": "The runner cannot press UI Toolkit pointers; the rule is covered by Myrtana.Tests ChoiceClickGateTests (G3ListView feeds press/release per row into ChoiceClickGate)."
+}

@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <LangVersion>9.0</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <!-- Same sources Unity compiles; they must stay free of UnityEngine references. -->
+  <ItemGroup>
+    <Compile Include="../../Assets/G3/Formats/**/*.cs" />
+    <!-- Engine-free audio logic + its format converter (`audio sim`). -->
+    <Compile Include="../../Assets/G3/Unity/Runtime/Audio/Logic/**/*.cs" />
+    <Compile Include="../../Assets/G3/Unity/Editor/Audio/AudioCatalogConverter.cs" />
+    <!-- Engine-free player rules (water zones and swimming: `water …`). -->
+    <Compile Include="../../Assets/G3/Unity/Runtime/Player/Logic/**/*.cs" />
+    <Compile Include="../../Assets/G3/Unity/Runtime/Characters/Logic/**/*.cs" />
+    <!-- Win32 icon resources (fix-165), no Unity types: `build relayout` keeps the launcher icon (fix-167). -->
+    <Compile Include="../../Assets/Myrtana/Unity/Editor/GameIcon.cs" />
+    <!-- Engine-free terrain relief (remaster-relief): `relief seams|audit`. -->
+    <Compile Include="../../Assets/G3/Unity/Runtime/Remaster/Logic/TerrainRelief.cs" />
+    <Compile Include="../../Assets/G3/Unity/Runtime/Remaster/Logic/ReliefNoise.cs" />
+    <Compile Include="../../Assets/G3/Unity/Runtime/Remaster/Logic/DuneField.cs" />
+    <Compile Include="../../Assets/G3/Unity/Runtime/Remaster/Logic/DuneShape.cs" />
+    <Compile Include="../../Assets/G3/Unity/Runtime/Remaster/Logic/ReliefFacts.cs" />
+    <Compile Include="../../Assets/G3/Unity/Runtime/Remaster/Logic/ReliefGround.cs" />
+    <Compile Include="../../Assets/G3/Unity/Runtime/Remaster/Logic/ReliefClearance.cs" />
+  </ItemGroup>
+
+  <!-- Gameplay core (pure Myrtana.* assemblies) + the G3 content importer: `content …` and `dialog …` commands. -->
+  <PropertyGroup>
+    <MyrtanaRoot Condition="'$(MyrtanaRoot)' == ''">../../Assets/Myrtana</MyrtanaRoot>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MyrtanaRoot)/Core/**/*.cs" />
+    <Compile Include="$(MyrtanaRoot)/Rules/**/*.cs" />
+    <Compile Include="$(MyrtanaRoot)/Simulation/**/*.cs" />
+    <Compile Include="$(MyrtanaRoot)/Story/**/*.cs" />
+    <Compile Include="$(MyrtanaRoot)/Session/**/*.cs" />
+    <Compile Include="$(MyrtanaRoot)/Import.G3/**/*.cs" />
+    <Compile Include="$(MyrtanaRoot)/Ui/Dialog/**/*.cs" />
+  </ItemGroup>
+
+</Project>

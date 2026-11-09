@@ -1,0 +1,26 @@
+{
+  "name": "fix143_late_trophies",
+  "verifies": "fix-143 [owner] (\"took the meat from a wolf, learned skinning later - no fur\"): G3 CP 1.75 rolls a corpse's trophies once at death by the perks known then (CleanUpPlunderInv, GeneratedPlunder), so with the option off a wolf looted before Perk_TrophyFur stays empty after learning it; with the port option \"Late trophies\" on the same corpse offers exactly its fur once (no second meat), and is focusable/lootable again",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_1; calm radius=60",
+    "latetrophies on=0",
+    "spawn Wolf attitude=neutral dist=3 side=front as=w",
+    "kill $w killer=hero",
+    "wait 1",
+    "expect has:It_Wolf_Fur=0",
+    "loot $w",
+    "expect has:It_Wolf_Fur=0",
+    "expect lootstacks:$w=0",
+    "learn Perk_TrophyFur",
+    "expect lootstacks:$w=0",
+    "latetrophies on=1",
+    "expect lootstacks:$w=1",
+    "loot $w",
+    "expect has:It_Wolf_Fur=1",
+    "expect lootstacks:$w=0",
+    "shot fix143_late_trophies"
+  ]
+}

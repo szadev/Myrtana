@@ -1,0 +1,31 @@
+{
+  "name": "fix132_god_hp",
+  "verifies": "fix-132 (owner, build 18f: HP 99315/99999 after console tp): tp's short immunity and god are a damage filter — the hero's HP and maximum stay his own (no 99999), hits during god take nothing and never knock him out, god off leaves HP as it was, and after god a hit hurts again. fix-136: tp heals the hero by design (TeleportTo RestoreFully) — to his own maximum, never 99999",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; notips; time 12",
+    "tp spot=flat_field_1; calm radius=60",
+    "expect hpmax:hero<1000",
+    "hp hero 150",
+    "tp spot=flat_field_2",
+    "expect hp:hero=200",
+    "expect hpmax:hero<1000",
+    "hp hero 150",
+    "expect hp:hero=150",
+    "expect hpmax:hero=200",
+    "god",
+    "expect hp:hero=150",
+    "spawn Wolf attitude=neutral dist=3 side=front as=w",
+    "calm radius=20",
+    "strike $w hero dmg=400",
+    "expect hp:hero=150",
+    "expect state:hero=Alive",
+    "god off",
+    "expect hp:hero=150",
+    "expect hpmax:hero<1000",
+    "strike $w hero dmg=20",
+    "expect hp:hero<150",
+    "despawn $w"
+  ]
+}

@@ -1,0 +1,25 @@
+<!--
+  mt-1: managed code stripping for the IL2CPP A/B build (DemoBuild variant "il2cpp", stripping Minimal). Minimal keeps every
+  user assembly whole; these entries also keep the class-library parts the content loader, the options and the saves reach
+  only through reflection (System.Text.Json converters created with MakeGenericType). The Mono default build does not strip,
+  so this file changes nothing there.
+-->
+<linker>
+  <assembly fullname="System.Text.Json" preserve="all"/>
+  <assembly fullname="System.Text.Encodings.Web" preserve="all"/>
+  <assembly fullname="System.Collections.Immutable" preserve="all"/>
+  <assembly fullname="G3.Formats" preserve="all"/>
+  <assembly fullname="G3.Audio.Logic" preserve="all"/>
+  <assembly fullname="G3.Effects.Logic" preserve="all"/>
+  <assembly fullname="G3.Weather.Logic" preserve="all"/>
+  <assembly fullname="G3.Player.Logic" preserve="all"/>
+  <assembly fullname="Myrtana.Core" preserve="all"/>
+  <assembly fullname="Myrtana.Rules" preserve="all"/>
+  <assembly fullname="Myrtana.Simulation" preserve="all"/>
+  <assembly fullname="Myrtana.Story" preserve="all"/>
+  <assembly fullname="Myrtana.Session" preserve="all"/>
+  <assembly fullname="Myrtana.Ui" preserve="all"/>
+  <assembly fullname="G3.Unity" preserve="all"/>
+  <assembly fullname="Myrtana.Unity.Ui" preserve="all"/>
+  <assembly fullname="Myrtana.Unity" preserve="all"/>
+</linker>

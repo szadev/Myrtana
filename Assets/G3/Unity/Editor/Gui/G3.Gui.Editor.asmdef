@@ -1,0 +1,20 @@
+{
+    "name": "G3.Gui.Editor",
+    "rootNamespace": "G3.Unity.Editor.Gui",
+    "references": [
+        "G3.Formats",
+        "Myrtana.Ui",
+        "Myrtana.Unity.Ui"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

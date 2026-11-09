@@ -1,0 +1,14 @@
+{
+    "name": "Myrtana.Unity",
+    "rootNamespace": "Myrtana.Unity",
+    "references": ["Myrtana.Core", "Myrtana.Rules", "Myrtana.Simulation", "Myrtana.Story", "Myrtana.Session", "G3.Unity", "G3.Audio.Logic", "G3.Effects.Logic", "G3.Player.Logic", "Myrtana.Ui", "Myrtana.Unity.Ui", "Unity.InputSystem", "Unity.RenderPipelines.Core.Runtime", "Unity.RenderPipelines.Universal.Runtime"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

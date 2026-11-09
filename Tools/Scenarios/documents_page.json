@@ -1,0 +1,24 @@
+{
+  "name": "documents_page",
+  "verifies": "fix-33: the documents page (IDD_PAGE_DOCUMENTS_2) lists every carried map, letter/book and recipe on its tab and reads the selected one",
+  "fresh": true,
+  "timeout": 90,
+  "notes": "Gives one of every CP 1.75 map (4; It_Map_Caves is no item), letter (10), book (6) and recipe (60: 46 alchemy, 2 cooking, 12 smithing), then opens each tab and takes a screenshot.",
+  "steps": [
+    "safe; time 12",
+    "docs all",
+    "expect has:It_Hassan_Letter>=1",
+    "expect has:It_Book_CPT_01>=1",
+    "expect has:It_Map_World>=1",
+    "docs all open=maps",
+    "shot docs_maps",
+    "docs all open=books",
+    "shot docs_books",
+    "docs all open=alchemy",
+    "shot docs_alchemy",
+    "docs all open=cooking",
+    "shot docs_cooking",
+    "docs all open=smithing",
+    "shot docs_smithing"
+  ]
+}

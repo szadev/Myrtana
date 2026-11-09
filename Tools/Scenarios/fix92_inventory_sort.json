@@ -1,0 +1,17 @@
+{
+  "name": "fix92_inventory_sort",
+  "verifies": "fix-92 [owner]: the sort modes have no text; a click on the selected category tab cycles G3 -> name -> value -> newest -> G3, the tab shows the mode's G3 theme arrow (none in G3 order, so the default looks like the original) and the grid follows",
+  "fresh": true,
+  "timeout": 60,
+  "steps": [
+    "safe; god; notips; time 12",
+    "give It_1H_Sword_01",
+    "give It_2H_Sword_01",
+    "give It_Bow_01",
+    "give It_1H_AssSword_01",
+    "invsort clicks=4",
+    "invsort clicks=1",
+    "invsort clicks=3"
+  ],
+  "notes": "invsort sends a real ClickEvent to the selected tab (G3TabBar.Reselected). The mode is in PlayerPrefs (Myrtana.InventorySort); 4 + 1 + 3 clicks leave it where it was. The second step reopens the page in name order: the mark must be there on open."
+}

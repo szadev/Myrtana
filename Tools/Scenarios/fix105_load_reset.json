@@ -1,0 +1,25 @@
+{
+  "name": "fix105_load_reset",
+  "verifies": "fix-105 G ([owner]: a clean hero state when a save is loaded or a new game starts; G3 rebuilds the player from the save): a hero left in a broken state — a control lock of the old game nobody releases, scripted input, walk-only, forced walk, held gait, a body yaw, look-behind, the torch's take running — is clean after the load: controls free, every flag at rest, no overlay running, and the torch works from its quick slot again",
+  "fresh": true,
+  "timeout": 180,
+  "steps": [
+    "safe; god; notips; time 12",
+    "save slot=fix105_reset",
+    "messhero",
+    "expect herotransient!=clean",
+    "expect locked",
+    "load slot=fix105_reset",
+    "wait 1",
+    "expect herotransient=clean",
+    "expect !locked",
+    "expect torchbusy=False",
+    "expect torchfails=0",
+    "quickslot It_Torch_Burning",
+    "expect torch=It_Torch_Burning",
+    "quickslot It_Torch_Burning",
+    "expect torch=-",
+    "expect herotransient=clean"
+  ],
+  "notes": "herotransient = what of the hero's transient state is not at rest (G3Player input/gait flags, the controller, a waiting weapon key, a combat motion, the torch overlay, the control lock and its holders), 'clean' when all is. GameBootstrap.Begin (load and new game) resets the body, camera and motion overlays (ResetHero), the views reset their parts in Bind, then HeroControlLock.ReleaseSessionHolders releases what the old game still held (logged as a warning)."
+}

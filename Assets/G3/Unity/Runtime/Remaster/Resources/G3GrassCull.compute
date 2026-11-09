@@ -1,0 +1,78 @@
+// World remaster v2 grass (Docs/remaster-world.md section 10.3): per-camera GPU culling of one mesh's instances
+// (G3's plants + the GrassDensify copies) for Graphics.RenderMeshIndirect. Frustum (bounding sphere against the six
+// planes), view range, and a distance thinning of the extra copies (the G3 originals always stay, so the far grass keeps
+// G3's own density and the near grass gets denser).
+// crash-2 (D3D12 DEVICE_HUNG): no append buffer / CopyCount. Clear zeroes a counter in a raw args buffer, Cull reserves
+// slots with InterlockedAdd and writes only below _Capacity, Finish writes min(counter, _Capacity) as every sub-mesh's
+// instance count; G3GrassV2 copies the raw buffer into the IndirectArguments buffer. A garbage or overflowing counter
+// can no longer turn into billions of instances. Dispatch is 2D (x <= 65535 groups): i = (y * _RowGroups) * 64 + x.
+#pragma kernel Clear
+#pragma kernel Cull
+#pragma kernel Finish
+
+struct G3GrassInst
+{
+    float3 pos;
+    float width;
+    float4 rot;
+    float height;
+    uint color;
+    float extra;     // 0 = G3's own plant, 1 = a density copy
+    float pad;
+};
+
+StructuredBuffer<G3GrassInst> _Instances;
+RWStructuredBuffer<uint> _Visible;
+RWByteAddressBuffer _Args;   // _SubMeshes x IndirectDrawIndexedArgs (5 uints), then the visible counter
+uint _Count;
+uint _Capacity;              // elements of _Visible
+uint _SubMeshes;
+uint _RowGroups;             // thread groups per dispatch row
+float4 _Planes[6];
+float4 _CamPos;      // xyz camera, w = view range (m)
+float4 _Params;      // x mesh radius (m per unit scale), y thinning start (fraction of the range), z unused, w unused
+
+uint Hash(uint x)
+{
+    x ^= x >> 16; x *= 0x7FEB352Du; x ^= x >> 15; x *= 0x846CA68Bu; x ^= x >> 16;
+    return x;
+}
+
+[numthreads(1, 1, 1)]
+void Clear(uint3 id : SV_DispatchThreadID)
+{
+    _Args.Store(_SubMeshes * 20, 0u);
+}
+
+[numthreads(64, 1, 1)]
+void Cull(uint3 id : SV_DispatchThreadID)
+{
+    uint i = id.y * _RowGroups * 64 + id.x;
+    if (i >= _Count) return;
+    G3GrassInst g = _Instances[i];
+    float r = _Params.x * max(g.width, g.height) + 1.5;   // + the relief may lift / lower a plant (G3ReliefGround.hlsl)
+    float3 c = g.pos + float3(0, g.height * 0.5, 0);
+    float d = distance(c, _CamPos.xyz);
+    if (d - r > _CamPos.w) return;
+    [unroll] for (int p = 0; p < 6; p++)
+        if (dot(_Planes[p].xyz, c) + _Planes[p].w < -r) return;
+    if (g.extra > 0.5)
+    {
+        // copies thin out from start*range to the range: keep fraction 1 -> 0
+        float t = saturate((d / max(_CamPos.w, 1) - _Params.y) / max(1 - _Params.y, 1e-3));
+        float h = (Hash(i * 747796405u + 2891336453u) & 0xFFFF) / 65535.0;
+        if (h < t) return;
+    }
+    uint slot;
+    _Args.InterlockedAdd(_SubMeshes * 20, 1u, slot);
+    if (slot < _Capacity) _Visible[slot] = i;
+}
+
+[numthreads(64, 1, 1)]
+void Finish(uint3 id : SV_DispatchThreadID)
+{
+    uint s = id.x;
+    if (s >= _SubMeshes) return;
+    uint n = min(_Args.Load(_SubMeshes * 20), _Capacity);
+    _Args.Store(s * 20 + 4, n);
+}

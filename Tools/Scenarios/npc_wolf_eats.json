@@ -1,0 +1,25 @@
+{
+  "name": "npc_wolf_eats",
+  "verifies": "par-npc: a deer flees from the hero (Panic slot → ZS_Flee); a wolf finds a scavenger's body (Food slot: Predator) and eats it (task EatBody, EatGround); CP Respawn: the scavenger's corpse 241 h later is removed or revived (60 %)",
+  "notes": "fix-184 (regress-1021b: the deer never fled): spawn attitude=neutral stores Neutral as the deer's attitude to the hero (AttitudeService TowardPlayer before Species), which removes the species' Panic; the deer keeps the default.",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; god; time 12",
+    "tp spot=flat_field_3; calm radius=80",
+    "spawn Deer attitude=default dist=12 as=deer",
+    "wait 6 until=phase:$deer=Flee timeout=6",
+    "probe $deer",
+    "spawn Faring_Pass_Scavenger attitude=neutral dist=8 as=prey",
+    "kill $prey",
+    "spawn Geldern_Wolf_01 attitude=neutral dist=16 as=wolf",
+    "tp npc:$prey dist=24 side=back",
+    "wait 6 until=task:$wolf=EatBody timeout=6",
+    "wait 15 until=dist:$wolf<26 timeout=15 soft=1",
+    "probe $wolf",
+    "shot scn_npc_wolf_eats look=$wolf",
+    "tp npc:$prey dist=40 side=back",
+    "corpse $prey hours=241",
+    "probe $prey"
+  ]
+}

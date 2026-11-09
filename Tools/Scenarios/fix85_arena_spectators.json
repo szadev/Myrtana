@@ -1,0 +1,28 @@
+{
+  "name": "fix85_arena_spectators",
+  "verifies": "fix-85 item 2: bystanders of an arena fight watch as spectators (G3 ZS_WatchFight -> ZS_WatchFight_Spectator: a free Spectator point, none at the CP arenas, else where they stand, only turning to the fighters) instead of keeping 5.5-6.5 m from the fighters (ZS_WatchFight_Loop), so nobody walks into the Reddock ring",
+  "fresh": true,
+  "timeout": 240,
+  "steps": [
+    "safe; god; notips; time 12",
+    "flag Copper_IsHot",
+    "tp npc:Copper dist=1.5",
+    "ask Copper BPANKRATZ31261 given=1",
+    "tp zone:Reddock_Arena",
+    "wait until=arena:Copper timeout=60 soft=1",
+    "draw kind=fist",
+    "focus Copper",
+    "wait 2",
+    "hold attack 1.2",
+    "wait 1",
+    "hold attack 1.2",
+    "wait 1",
+    "hold attack 1.2",
+    "wait 4",
+    "expect watchloop=0",
+    "expect watchinring:Reddock_Arena=0",
+    "expect watchspec>=0",
+    "focus off"
+  ],
+  "notes": "watchspec counts the spectators (informational: depends on who is near the ring at noon); watchloop must stay 0 for an arena fight; watchinring counts watchers inside the arena zone (the fighters are not watchers). Same rule for Montera/Nordmar arenas."
+}

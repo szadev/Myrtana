@@ -1,0 +1,30 @@
+{
+  "name": "fix83_hut_floor",
+  "verifies": "fix-83: the fishing hut at the start beach (Lester stands at it, chest inside) has its G3 collision again — the hero stands on its floor (21.49) and walks across it to the chest instead of sinking onto the terrain ~2 m below",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp npc:Lester dist=2",
+    "tp obj:G3_Object_Interact_Animated_Chest_02 dist=1.2",
+    "wait 1.5",
+    "probe",
+    "expect grounded",
+    "expect heroy>21.25",
+    "expect heroy<22.2",
+    "shot fix83_hut_chest look=obj:G3_Object_Interact_Animated_Chest_02",
+    "walkto 841.3,21.49,-197.6 near=0.7 secs=12",
+    "wait 0.5",
+    "expect grounded",
+    "expect heroy>21.25",
+    "expect heroy<22.2",
+    "walkto 843.6,21.49,-196.9 near=0.8 secs=12",
+    "wait 0.5",
+    "expect grounded",
+    "expect heroy>21.25",
+    "expect heroy<22.2",
+    "probe",
+    "shot fix83_hut_floor"
+  ],
+  "notes": "G3_Architecture_Fishinghouse_01 at (840.02, 21.49, -198.84), Cell_20_16; its chest G3_Object_Interact_Animated_Chest_02 at (844.45, 21.49, -196.73), beds at (842.34, -195.94) and (844.79, -198.48). Needs the cell colliders rebuilt (G3CollisionBuilder.RebuildCells) after the fix-83 water rule; before, the hut had no collider at all (heroy ~19.5 on the terrain)."
+}

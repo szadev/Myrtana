@@ -1,0 +1,26 @@
+{
+  "name": "talk_swim",
+  "verifies": "fix-4 #3: an NPC with an Important info does not start the talk while the hero swims; it does once he stands on the shore",
+  "fresh": true,
+  "timeout": 120,
+  "notes": "Kent's Important info BPANKRATZ31157 is unconditional; 'forget' replays it. Kent stands on the bank; the hero swims ~5-8 m off (probe prints the distance). fix-184 (regress-1021b): the 1 s swim towards the bank covered 4.1 m and put the hero on his feet in the shallows; 0.3 s keeps him swimming.",
+  "steps": [
+    "safe; god; time 12",
+    "tp spot=deep_water_shore.shore",
+    "bring Kent dist=1 as=npc",
+    "calm radius=40 except=Kent",
+    "forget BPANKRATZ31157",
+    "tp spot=deep_water_shore",
+    "wait until=swimming timeout=8",
+    "look spot:deep_water_shore.shore",
+    "move fwd secs=0.3",
+    "expect swimming",
+    "wait 6",
+    "probe Kent",
+    "expect !dialog",
+    "tp spot=deep_water_shore.shore; bring Kent dist=2",
+    "wait until=dialog timeout=12",
+    "expect partner=Kent",
+    "abort"
+  ]
+}

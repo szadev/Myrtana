@@ -1,0 +1,17 @@
+{
+    "name": "Myrtana.Unity.Ui",
+    "rootNamespace": "Myrtana.Unity.Ui",
+    "references": [
+        "Myrtana.Ui",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

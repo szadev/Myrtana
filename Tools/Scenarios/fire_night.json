@@ -1,0 +1,20 @@
+{
+  "name": "fire_night",
+  "verifies": "fire-fx: night screenshots of a wall torch, a campfire and the hero's torch",
+  "fresh": true,
+  "timeout": 90,
+  "notes": "wall_torch = placed torch effect ~10 m from the Faring dev start; campfire = fire with peaceful sitters (near Geldern; 'safe' gives Orc fame).",
+  "steps": [
+    "safe; god; time 22; weather Sunny",
+    "tp spot=wall_torch.stand",
+    "wait 2",
+    "shot scn_fire_wall_torch look=spot:wall_torch",
+    "tp spot=campfire.stand",
+    "wait 2",
+    "shot scn_fire_campfire look=spot:campfire",
+    "torch on",
+    "wait 2",
+    "shot scn_fire_hero_torch",
+    "expect hour>21"
+  ]
+}

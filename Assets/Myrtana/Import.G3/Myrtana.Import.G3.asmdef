@@ -1,0 +1,14 @@
+{
+    "name": "Myrtana.Import.G3",
+    "rootNamespace": "Myrtana.Import.G3",
+    "references": ["G3.Formats", "Myrtana.Core", "Myrtana.Rules", "Myrtana.Simulation", "Myrtana.Story", "Myrtana.Session", "Myrtana.Ui"],
+    "includePlatforms": ["Editor"],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

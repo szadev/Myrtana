@@ -1,0 +1,29 @@
+{
+  "name": "fix68_focus_party",
+  "verifies": "fix-68 #3/#7: with a weapon drawn the combat focus never takes a companion (G3 GetFocusEntityPriority: party members are Friendly to the hero -> -1; an ally fighting the hero's foe -> -1): the hero faces Gorn, who fights an orc next to him, and the focus is the orc or nothing, never Gorn",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_3; calm radius=80",
+    "bring Gorn dist=1.5 side=front",
+    "party Gorn add",
+    "spawn Orc_Elite_01 attitude=hostile dist=3 side=front as=orc",
+    "hp $orc 3000",
+    "engage Gorn $orc",
+    "engage $orc Gorn",
+    "draw",
+    "look Gorn",
+    "wait 0.4",
+    "expect focus!=Gorn",
+    "wait 4",
+    "look Gorn",
+    "wait 0.4",
+    "expect focus!=Gorn",
+    "look $orc",
+    "wait 2 until=focus=$orc soft=1",
+    "expect focus!=Gorn",
+    "party Gorn remove"
+  ],
+  "notes": "No 'focus' op (it pins the focus): the natural scan runs. Before fix-68 the focus took any character, so facing Gorn focused him."
+}

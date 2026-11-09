@@ -1,0 +1,24 @@
+{
+  "name": "fix75_block_lag",
+  "verifies": "fix-75 #3: the block during an attack comes up as soon as G3 allows (the running Hit ends; G3 never cuts a running Raise/Hit: OnPlayerSecondaryAction only queues Parade), replaces a clicked follow-up attack (one-slot queue), is never lost, comes back after a block-held quick attack while the key stays down (G3 FUN_10002130) and stays up while held",
+  "fresh": true,
+  "timeout": 90,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_1; calm radius=60",
+    "give It_1H_Sword_01",
+    "equip It_1H_Sword_01",
+    "draw",
+    "wait 1",
+    "blocklag after=0.1 max=700",
+    "wait 1",
+    "blocklag after=0.1 combo=1 max=700",
+    "wait 1",
+    "blocklag after=0.4 max=400",
+    "wait 1",
+    "blocklag after=0.05 quick=1 max=700 hold=2",
+    "wait 1",
+    "hold block secs=3 parade=1"
+  ],
+  "notes": "1H Attack: Hit ends 533 ms after the start (speed 0.6), so a block pressed 100 ms in is up after ~430-450 ms, 400 ms in after ~130-150 ms; from rest 67 ms (ResponsivenessTests). blocklag fails over max= ms, when a move starts after the block press (the queued combo attack must be replaced) or when the parade drops while held."
+}

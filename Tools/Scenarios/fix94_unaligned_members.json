@@ -1,0 +1,26 @@
+{
+  "name": "fix94_unaligned_members",
+  "verifies": "fix-94 (review of fix-91): enclave members without an alignment of their own (Phil, Seruk, Wenzel at Kap Dun; Inog at Silden; Konrad at Trelis) are no guards (G3 IsGuard: own alignment == the enclave's) and not loyal to the orc town, and politically Neutral to orcs and rebels (G3 GetPoliticalAttitude None); the town's orc guards still are both; Kap Dun's orcs leave them alone for 30 s",
+  "fresh": true,
+  "timeout": 150,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp npc=Phil",
+    "wait 2",
+    "expect isguard:Phil=False",
+    "expect loyal:Phil=False",
+    "expect isguard:Seruk=False",
+    "expect loyal:Seruk=False",
+    "expect loyal:Wenzel=False",
+    "expect politics:Phil=Neutral/Neutral",
+    "expect politics:Seruk=Neutral/Neutral",
+    "expect isguard:Inog=False",
+    "expect isguard:Konrad=False",
+    "wait 30",
+    "expect state:Phil=Alive",
+    "expect state:Seruk=Alive",
+    "expect fighting:Phil=False",
+    "expect fighting:Seruk=False"
+  ],
+  "notes": "Probes isguard/loyal/politics (ScenarioRunner.Fix94.cs; politics = attitude toward a probe orc / a probe rebel without enclave). Wenzel's SetPAL Reb (quest Wenzel_KapDunMetzel) is covered by GuardRevolutionSessionTests.SetAlignmentRebOnWenzel_*. If an NPC is not streamed in, the profile still comes from the simulation (no view needed)."
+}

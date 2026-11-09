@@ -1,0 +1,14 @@
+{
+    "name": "G3.Unity",
+    "rootNamespace": "G3.Unity",
+    "references": ["Unity.InputSystem", "G3.Audio.Logic", "G3.Player.Logic", "G3.Effects.Logic", "G3.Weather.Logic", "Unity.RenderPipelines.Core.Runtime", "Unity.RenderPipelines.Universal.Runtime"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

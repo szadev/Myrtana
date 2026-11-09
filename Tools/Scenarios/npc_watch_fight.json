@@ -1,0 +1,24 @@
+{
+  "name": "npc_watch_fight",
+  "verifies": "par-npc2 #25/#30: a bystander says ThereIsAFight, keeps 5.5-6.5 m from the nearer fighter (watch Stand/Approach/StepBack), comments hits (HeavyHit/Ooh_0n/Cheer_0n), applauds the winner; the knocked-out loser says OhMyHead or NextTimeYoureInForIt when it gets up. fix-46: the watcher is Slave_02 (Slave alignment: Neutral to Orc and Rebel, G3 politicalMatrix); FreeSlave_01 is faction Reb, a friend of the KingsGuard, and joined the fight (AssessFightSound), so it never watched; timeout above its own waits (6+3+10+90+40 s)",
+  "fresh": true,
+  "timeout": 260,
+  "steps": [
+    "safe; god; time 12",
+    "tp spot=flat_field_2; calm radius=80",
+    "spawn Orc_Elite_01 attitude=neutral dist=6 as=orc",
+    "spawn KingsGuard_01 attitude=neutral dist=6 side=back as=reb",
+    "spawn Slave_02 attitude=neutral dist=3 side=left as=watcher",
+    "wait 6 until=fighting:$orc timeout=6",
+    "wait 3",
+    "npctask $watcher",
+    "shot scn_npc_watch_fight look=$watcher",
+    "wait 10",
+    "npctask $watcher",
+    "wait 90 until=!fighting:$orc timeout=90 soft=1",
+    "npctask $watcher",
+    "wait 40",
+    "probe $reb",
+    "probe $orc"
+  ]
+}

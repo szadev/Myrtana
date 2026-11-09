@@ -1,0 +1,27 @@
+{
+  "name": "fix93_item_skill",
+  "verifies": "fix-93: a skill a worn item activates (G3 ActivateSkill1/2, gCInventorySlot::OnApplyStats: ActivationCount; IsSkillActive = learned || activated) is active while it is worn — the Orc Slayer's Perk_OrcSlayer, the nomad robe's Perk_ResistHeat — and not learned (teachers still teach it).",
+  "fresh": true,
+  "timeout": 60,
+  "steps": [
+    "safe; notips",
+    "attr STR 200",
+    "attr DEX 100",
+    "learn Perk_1H_1",
+    "log -- the CP start kit wears the Orc Slayer: its perk is active through the item",
+    "expect skillactive:Perk_OrcSlayer=item",
+    "unequip It_1H_OrcSlayer_01",
+    "expect skillactive:Perk_OrcSlayer=no",
+    "equip It_1H_OrcSlayer_01",
+    "expect skillactive:Perk_OrcSlayer=item",
+    "unequip It_1H_OrcSlayer_01",
+    "expect skillactive:Perk_OrcSlayer=no",
+    "equip It_1H_OrcSlayer_01",
+    "equip Body_Nomad",
+    "expect skillactive:Perk_ResistHeat=item",
+    "unequip Body_Nomad",
+    "expect skillactive:Perk_ResistHeat=no",
+    "probe"
+  ],
+  "notes": "fix-97 (r39 'skillactive:Perk_OrcSlayer=no: was item' before any equip): the fresh hero already wears the Orc Slayer (G3HeroStart, CP InventoryAssureStartupItems), so the scenario takes it off first. Swaps, worn-out stacks, loading and the combat bonus vs orcs are covered by ItemSkillTests. The skills page shows such a perk lit while the item is worn (G3 list: normal icon when learned or ActivationCount > 0)."
+}

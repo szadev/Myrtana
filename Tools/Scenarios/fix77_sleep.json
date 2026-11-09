@@ -1,0 +1,32 @@
+{
+  "name": "fix77_sleep",
+  "verifies": "fix-77: lying down in a bed opens the bed's own G3 dialog (PS_Interact_SleepBed → AssessTalk → the bed's infos): 'sleep until the next morning / noon / the next evening / midnight' and 'End'; choosing morning skips the clock to 08:00 and refills HP (PlayerSleep), the hero gets up; 'End' gets up without sleeping",
+  "fresh": true,
+  "autodialog": false,
+  "timeout": 240,
+  "steps": [
+    "safe; god; notips; time 22",
+    "tp obj:G3_Object_Interact_Bed_01 dist=1.5",
+    "wait 1",
+    "hp hero 60",
+    "use obj:G3_Object_Interact_Bed_01",
+    "expect inbeddialog=True",
+    "expect dialog=True",
+    "expect options=5",
+    "shot fix77_sleep_menu",
+    "choose FILLERX293",
+    "wait 4",
+    "expect dialog=False",
+    "expect hour>=8",
+    "expect hour<8.5",
+    "expect hp:hero>60",
+    "use obj:G3_Object_Interact_Bed_01",
+    "expect inbeddialog=True",
+    "choose BPANKRATZ30",
+    "wait 4",
+    "expect dialog=False",
+    "expect hour<8.5",
+    "expect inbeddialog=False"
+  ],
+  "notes": "FILLERX293…296 are the Bed_01 template's infos (8, 12, 20, midnight); BPANKRATZ30 is the hero's general 'End' (Закончить). Other bed templates (Bed_02…06) own their own four infos with the same texts. ESC in the menu moves the mark to 'End' (G3 gCHUDListCtrlDialog)."
+}

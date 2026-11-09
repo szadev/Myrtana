@@ -1,0 +1,33 @@
+{
+  "name": "fix140_trade_hold",
+  "verifies": "fix-140 [owner, Demo_2026-10-19]: the trader stays in the conversation while the trade page is open (G3 DoTrade: IS_Idle_Trade until the page closes) - the dialog stays active, the trader is not back in his routine and stays by the hero; closing the page runs the trade topic's End and the conversation ends",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp npc:Connor dist=1.5",
+    "ask Connor SKALVERAM3405",
+    "expect !dialog",
+    "talk Connor",
+    "wait until=dialog timeout=8",
+    "lines max=20",
+    "expect offered:FILLER27",
+    "choose FILLER27",
+    "lines max=5",
+    "wait 1",
+    "expect page=G3TradeScreen",
+    "expect dialog",
+    "expect routine:Connor=False",
+    "wait 8",
+    "expect page=G3TradeScreen",
+    "expect dialog",
+    "expect routine:Connor=False",
+    "expect dist:Connor<3",
+    "shot fix140_trade_hold",
+    "closepage",
+    "wait 1",
+    "expect !dialog",
+    "expect page=-"
+  ],
+  "notes": "Connor (Faring, ~36 m from the dev start) trades once his topic SKALVERAM3405 (no condition, setRole Trade) has run. fix-154: the scenario used RebTrader_02#b3073412, but that trader belongs to the rebel sector G3_Myrtana_01_Faring_NPC_02 (enabled only by Faring's liberation switch: absent at the start) and, like every generic NPC, owns no dialog topic of his own, so Dialog.CanTalkTo refused him ('talk: no dialog' in build-1019b; not a fix-140 regression). FILLER27 = the hero's generic trade topic (say, openTrade, endDialog). Before fix-140 the talk ended at once and the page opened afterwards, so the trader went back to his routine and walked off while the hero traded. Rules covered by Myrtana.Tests ItemDialogTests.TradeTopic_HeldByThePage_*."
+}

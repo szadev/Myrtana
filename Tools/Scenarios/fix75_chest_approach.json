@@ -1,0 +1,25 @@
+{
+  "name": "fix75_chest_approach",
+  "loadout": "own",
+  "verifies": "fix-75 #4/#5: using a chest from 3 m the hero walks to it (G3 PS_Interact -> _AI_Goto_Ext), faces it, kneels and opens it, then the loot page opens; the secondary button cancels the approach and ends a seat (G3 action 0x66 -> PS_Interact_End): he stands up, the slot is free, no block",
+  "fresh": true,
+  "timeout": 180,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp obj:G3_Object_Interact_Animated_Chest_01 dist=3",
+    "use obj:G3_Object_Interact_Animated_Chest_01",
+    "useprobe obj:G3_Object_Interact_Animated_Chest_01 walked=1.5 snap=0.3",
+    "expect objpart~OpenChest_",
+    "expect page=G3LootScreen",
+    "shot fix75_chest_open",
+    "closepage",
+    "tp obj:G3_Object_Interact_Bench_01 dist=3",
+    "use obj:G3_Object_Interact_Bench_01",
+    "useprobe walked=1 snap=0.3",
+    "expect key~SitBench",
+    "cancel",
+    "expect !seated",
+    "expect !parade"
+  ],
+  "notes": "useprobe logs the metres walked in the approach and what was placed at once (stuck at the object's collider). cancel = the secondary button (HeroObjectUse.RequestCancel, the same path as a press of Use2). cancel fails when the hero still holds the object's slot (StationClaims) or the block went up."
+}

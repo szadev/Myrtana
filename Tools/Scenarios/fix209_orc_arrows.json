@@ -1,0 +1,28 @@
+{
+  "name": "fix209_orc_arrows",
+  "verifies": "fix-209: a hostile elite orc dies from the hero's arrows (a lethal missile hit kills, CP IsDeadlyDamage); every arrow registers on its body",
+  "fresh": true,
+  "timeout": 400,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_1; calm radius=80",
+    "loadout bow",
+    "spawn Orc_Raider_Elite_01 attitude=hostile dist=12 side=front as=o",
+    "freeze only=$o",
+    "touchwatch victim=$o",
+    "draw ranged",
+    "wait 1",
+    "loose $o ammo=Arrow",
+    "log after 1: hp $o",
+    "probe $o",
+    "loose $o ammo=Arrow",
+    "probe $o",
+    "loose $o ammo=Arrow",
+    "probe $o",
+    "loose $o ammo=Arrow",
+    "probe $o",
+    "loose $o ammo=Arrow",
+    "probe $o",
+    "touchwatch off"
+  ]
+}

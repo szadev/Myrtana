@@ -1,0 +1,139 @@
+// Ground cover scatter (Docs/remaster-world.md section 18, remaster-veg): per-camera GPU culling of every resident scatter
+// instance (one buffer, pages per tile/layer) into per-(type, LOD) visible ranges for Graphics.RenderMeshIndirect, plus the
+// character bending trail map. Kernels:
+//   Clear - zero the instance counts of all draw slots (args: 5 uints per slot, instanceCount at +4)
+//   Cull  - per instance: view range, frustum (bounding sphere; + margin for shadow casters), far-field thinning by a
+//           position hash (survivors grow in the shader), LOD by distance; append into its slot's range
+//   Clamp - clamp each slot's count to its capacity
+//   Bend  - the toroidal trail map: re-anchor texels the camera moved past, recover, stamp the benders
+#pragma kernel Clear
+#pragma kernel Cull
+#pragma kernel Clamp
+#pragma kernel Bend
+
+struct G3ScatterInst
+{
+    float3 pos;
+    float scale;
+    float4 rot;
+    uint color;
+    uint type;
+    float2 pad;
+};
+struct G3ScatterType
+{
+    float4 range;    // x view range (m), y fade start, z LOD1 distance, w thin start
+    float4 look;     // x wind, y bend, z kind, w mesh top
+    float4 cull;     // x bounding radius (m at scale 1), y shadow distance (m)
+    uint4 slots;     // x slot LOD0, y slot LOD1, z flags (1 casts shadows)
+};
+
+StructuredBuffer<G3ScatterInst> _Instances;
+StructuredBuffer<G3ScatterType> _Types;
+StructuredBuffer<uint2> _Slots;          // x first visible index, y capacity
+RWStructuredBuffer<uint> _Visible;
+RWByteAddressBuffer _Args;
+uint _Count;
+uint _SlotCount;
+float4 _Planes[6];
+float4 _CamPos;      // xyz camera, w shadow margin (m)
+float4 _Params;      // x thin floor (kept fraction at the range end), y thin growth (shader), z unused, w shadows on
+
+uint Hash(uint x)
+{
+    x ^= x >> 16; x *= 0x7FEB352Du; x ^= x >> 15; x *= 0x846CA68Bu; x ^= x >> 16;
+    return x;
+}
+
+[numthreads(64, 1, 1)]
+void Clear(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x < _SlotCount) _Args.Store(id.x * 20 + 4, 0);
+}
+
+[numthreads(64, 1, 1)]
+void Clamp(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= _SlotCount) return;
+    uint c = _Args.Load(id.x * 20 + 4);
+    uint cap = _Slots[id.x].y;
+    if (c > cap) _Args.Store(id.x * 20 + 4, cap);
+}
+
+[numthreads(64, 1, 1)]
+void Cull(uint3 id : SV_DispatchThreadID)
+{
+    uint i = id.x;
+    if (i >= _Count) return;
+    G3ScatterInst g = _Instances[i];
+    if (g.type == 0xFFFFFFFFu) return;
+    G3ScatterType t = _Types[g.type];
+    float d = distance(g.pos, _CamPos.xyz);
+    // + 1.5 m: the relief may lift / lower the instance (G3ReliefGround.hlsl), and the thinned far field grows
+    float r = t.cull.x * g.scale * 1.6 + 1.5;
+    if (d - r > t.range.x) return;
+    bool shadow = (t.slots.z & 1u) != 0 && _Params.w > 0 && d < t.cull.y;
+    float margin = shadow ? _CamPos.w : 0;
+    float3 c = g.pos;
+    [unroll] for (int p = 0; p < 6; p++)
+        if (dot(_Planes[p].xyz, c) + _Planes[p].w < -(r + margin)) return;
+    // far-field thinning, stable per instance (hash of its position, not its buffer index)
+    float s = saturate((d - t.range.w) / max(t.range.x - t.range.w, 1e-3));
+    float keep = lerp(1, _Params.x, s);
+    float h = (Hash(asuint(g.pos.x) * 747796405u ^ Hash(asuint(g.pos.z) + 2891336453u)) & 0xFFFF) / 65535.0;
+    if (h > keep) return;
+    uint slot = (t.slots.y != t.slots.x && d > t.range.z) ? t.slots.y : t.slots.x;
+    if (slot >= _SlotCount) return;   // dx12-1: a stale type entry never addresses past the args / slots buffers
+    uint idx;
+    _Args.InterlockedAdd(slot * 20 + 4, 1, idx);
+    uint2 sl = _Slots[slot];
+    if (idx < sl.y) _Visible[sl.x + idx] = i;
+}
+
+// ------------------------------------------------------------------ bending trail (ScatterBend, G3ScatterBend.hlsl)
+
+RWTexture2D<float2> _Trail;
+uint _TrailN;
+float4 _TrailP;       // x extent (m), y recovery factor this frame (exp(-dt/tau)), zw camera xz
+float4 _TrailPrev;    // xy previous camera xz
+StructuredBuffer<float4> _Benders;   // 2 per bender: (x, z, radius, strength), (vx, vz, 0, 0)
+uint _BenderCount;
+
+float WrapNear(float u, float centre, float extent)
+{
+    float v = u - centre;
+    return centre + v - extent * round(v / extent);
+}
+
+[numthreads(8, 8, 1)]
+void Bend(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= _TrailN || id.y >= _TrailN) return;
+    float ext = _TrailP.x;
+    float2 u = (float2(id.xy) + 0.5) / _TrailN * ext;
+    float2 w = float2(WrapNear(u.x, _TrailP.z, ext), WrapNear(u.y, _TrailP.w, ext));
+    float2 wp = float2(WrapNear(u.x, _TrailPrev.x, ext), WrapNear(u.y, _TrailPrev.y, ext));
+    float2 v = _Trail[id.xy];
+    if (any(abs(w - wp) > 1)) v = 0;   // this texel now maps to another place: start empty
+    v *= _TrailP.y;
+    for (uint b = 0; b < _BenderCount; b++)
+    {
+        float4 a = _Benders[b * 2];
+        float4 m = _Benders[b * 2 + 1];
+        float2 dxz = w - a.xy;
+        float dd = length(dxz);
+        if (dd >= a.z) continue;
+        float f = 1 - dd / a.z;
+        f = f * f * (3 - 2 * f) * a.w;
+        float2 o = dd > 1e-4 ? dxz / dd : 0;
+        float sp = length(m.xy);
+        float mv = min(1, sp / 3) * 0.6;
+        float2 md = sp > 1e-3 ? m.xy / sp : 0;
+        float2 pd = o * (1 - mv) + md * mv;
+        float pl = length(pd);
+        if (pl > 1e-4) pd /= pl;
+        float2 st = pd * f;
+        if (dot(st, st) > dot(v, v)) v = st;
+    }
+    _Trail[id.xy] = v;
+}

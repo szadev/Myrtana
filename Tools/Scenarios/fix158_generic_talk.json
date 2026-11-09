@@ -1,0 +1,32 @@
+{
+  "name": "fix158_generic_talk",
+  "verifies": "fix-158: generic NPCs (no infos of their own) get the hero's generic infos (G3 gCInfoManager_PS::HasInfos falls back to the PC_Hero list): the Vangard trader RebTrader_01 is talkable and offers the trade topic FILLER27, the trade page opens; a generic mercenary in Faring with nothing to say answers with a StartSayRefuseTalk line and no dialog opens",
+  "fresh": true,
+  "timeout": 150,
+  "steps": [
+    "safe; god; notips; time 12",
+    "expect talkable:Merc_06#7d0c9592=False",
+    "tp npc:Merc_06#7d0c9592 dist=1.5",
+    "talk Merc_06#7d0c9592",
+    "wait 1",
+    "expect !dialog",
+    "expect refuseline:Merc_06#7d0c9592!=-",
+    "probe Merc_06#7d0c9592",
+    "tp npc:RebTrader_01#e8bf511f dist=1.5",
+    "expect talkable:RebTrader_01#e8bf511f=True",
+    "expect topics:RebTrader_01#e8bf511f~FILLER27",
+    "talk RebTrader_01#e8bf511f",
+    "wait until=dialog timeout=8",
+    "lines max=20",
+    "expect offered:FILLER27",
+    "choose FILLER27",
+    "lines max=5",
+    "wait 1",
+    "expect page=G3TradeScreen",
+    "shot fix158_generic_trade",
+    "closepage",
+    "wait 1",
+    "expect !dialog"
+  ],
+  "notes": "Merc_06#7d0c9592 stands ~14 m from the dev start (sector Faring_NPC_01, on at the start) and owns no info; the first refusal is the situational variant (FUN_10051a30: by his routine destination, default WhatDoYouWant). RebTrader_01#e8bf511f is in sector Vangard_NPC_01 (on at the start), tradesAtStart. RebTrader_02#b3073412 (Faring_NPC_02, off until the liberation) is covered by GenericTalkTests.RebTrader_OffersTrade_WhenHisSectorIsOn. Before fix-158 Dialog.CanTalkTo counted only own topics, so no generic NPC could be talked to."
+}

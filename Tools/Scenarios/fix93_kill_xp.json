@@ -1,0 +1,33 @@
+{
+  "name": "fix93_kill_xp",
+  "verifies": "fix-93 [owner]: the hero gets the full kill XP when his own hit hurt the victim and any other NPC finishes it ('we practically killed it'); no XP for a stranger's kill of a victim he never hurt; paid once.",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_1; calm radius=80",
+    "draw melee",
+    "spawn Wolf attitude=neutral dist=3 side=front as=w1",
+    "spawn Wolf attitude=neutral dist=4 side=left as=w2",
+    "spawn Orc_Warrior_01 attitude=neutral dist=3 side=right as=orc",
+    "freeze 60 only=$w1",
+    "freeze 60 only=$w2",
+    "freeze 60 only=$orc",
+    "wait 1",
+    "xpmark",
+    "log -- a wolf the hero never hurt, killed by the orc: no XP",
+    "hp $w2 5",
+    "strike $orc $w2 dmg=500",
+    "expect state:$w2=Dead",
+    "expect xpgain=0",
+    "log -- the hero hurts the other wolf, the orc kills it: full kill XP",
+    "strike hero $w1 dmg=10",
+    "expect hurtbyhero:$w1=1",
+    "hp $w1 5",
+    "strike $orc $w1 dmg=500",
+    "expect state:$w1=Dead",
+    "expect xpgain>0",
+    "probe"
+  ],
+  "notes": "strike = one melee hit resolved now (ScenarioRunner.Fix93, BuildHit -> CombatService.Strike); ActorVitals marks a victim the hero's hit took HP from (HurtByPlayer, saved) and ActorDefeated carries it when the defeat has a killer; KillXpAwarder pays once per NPC (G3 DefeatedByPlayer). The XP message (GO_XP) shows as for the hero's own kill. xpgain = XP since xpmark (fix-97, r39 'xp=0: was 2500': a fresh hero has the CP start XP, Ardea_Spawn_Point GiveXP 500 x 5)."
+}

@@ -1,0 +1,24 @@
+{
+  "name": "bloodfly_water",
+  "verifies": "polish-3 #7 / fix-7 #3: a bloodfly over a swimming hero hovers at the surface and waits (no attack) until he leaves the water",
+  "fresh": true,
+  "timeout": 120,
+  "notes": "Spot = river lake (Rivermesh_08) with Bloodfly#ec2e4fce ~20 m away; 'bring' moves the fly over open water halfway between the hero and the shore (fix-184: 10 m in front of the hero it landed on the mill's collider 3.9 m over the surface, regress-1021b and editor-runner-16).",
+  "steps": [
+    "safe; god; time 12",
+    "tp spot=deep_water_bloodfly_2",
+    "wait until=swimming timeout=8",
+    "calm radius=80 except=$spot.npc",
+    "bring $spot.npc near=-403.6,2.3,718.5 dist=0.5 as=fly",
+    "engage $fly hero reason=Enemy",
+    "wait 6",
+    "probe $fly",
+    "expect abovewater:$fly<1.5",
+    "expect swimming",
+    "expect state:hero=Alive",
+    "shot scn_bloodfly_water look=$fly",
+    "wait 4",
+    "probe $fly",
+    "expect dist:$fly<15"
+  ]
+}

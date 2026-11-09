@@ -1,0 +1,27 @@
+{
+  "name": "fix142_ledge_chase",
+  "verifies": "fix-142 (owner, Demo_2026-10-19: a Trelis ogre chasing the hero stood at the rim of the ravine above him, a free target for his bow): a melee monster out of reach runs along the NavMesh (round the ledge, down a drop link up to 4 m) instead of straight into the edge; when no way leads into reach it backs off and gives the fight up instead of standing. Pass: the ogre never stands still longer than 5 s while it chases (chasestand), and it either reaches the hero or retreats",
+  "fresh": true,
+  "timeout": 300,
+  "notes": "Case 1: the owner's spot, the Trelis ravine (Trelis_Level_Dungeon_01_03 floor -11.1 m, the landscape rim 1.7 m, 12.7 m above). Case 2: the Nordmar landscape cliff of terrain_ledges (180.4 m at its foot, 191.9 m on top) next to the gentle Hammerclan path. '[combat] ... chase A -> B' lines give the way (Straight / Path / Unreachable) and the plan; '... retreats from' starts a give-up. chaseway / chaseunreachable / retreating / ignoresunreachable probe the rest.",
+  "steps": [
+    "god; notips; safe; time 12",
+    "log -- case 1: the owner's spot, ogre on the ravine rim, hero on the ravine floor",
+    "tp pos=-481,-11.06,22",
+    "calm radius=60",
+    "spawn Trelis_Ogre_01 attitude=hostile near=-481,1.7,30 dist=0 as=o",
+    "wait secs=3",
+    "probe $o",
+    "wait secs=25",
+    "probe $o",
+    "expect chasestand:$o<5",
+    "despawn target=$o",
+    "log -- case 2: the Nordmar cliff east of the Hammerclan path, ogre on top, hero at its foot",
+    "tp pos=446.0,180.0,1070.0",
+    "calm radius=60",
+    "spawn Trelis_Ogre_01 attitude=hostile near=450,191.9,1070 dist=0 as=p",
+    "wait secs=28",
+    "probe $p",
+    "expect chasestand:$p<5"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "fix84_focus_names",
+  "verifies": "fix-84 item 4: every character gets the focus (and its focus name), with or without dialog (G3 GetFocusEntityPriority PS_Normal: NPC priority 3): a dev copy of Kent without topics is focused; Use on it does nothing",
+  "fresh": true,
+  "timeout": 90,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_1; calm radius=60",
+    "spawn Kent attitude=neutral dist=2.5 as=v",
+    "calm only=$v",
+    "wait 1",
+    "look npc:$v",
+    "wait 1 until=ifocus=$v",
+    "expect ifocus=$v",
+    "talk $v",
+    "wait 1",
+    "expect !dialog",
+    "despawn $v"
+  ],
+  "notes": "Before fix-84 PlayerInteraction.ConsiderNpc skipped NPCs without topics (ifocus stayed '-' and no name was drawn)."
+}

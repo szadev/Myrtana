@@ -1,0 +1,18 @@
+{
+  "name": "fix84_arena_run",
+  "verifies": "fix-84 item 3a: an arena opponent runs to the ring (G3 ZS_Arena: _AI_Goto_Ext walk mode 2 = Run), Reddock arena (Copper_Arena)",
+  "fresh": true,
+  "timeout": 180,
+  "steps": [
+    "safe; god; notips; time 12",
+    "flag Copper_IsHot",
+    "tp npc:Copper dist=1.5",
+    "ask Copper BPANKRATZ31261 given=1",
+    "wait 0.5",
+    "expect npcruns:Copper=True",
+    "tp zone:Reddock_Arena",
+    "wait until=arena:Copper timeout=60 soft=1",
+    "expect arena:Copper=True"
+  ],
+  "notes": "npcruns = NpcSimulation.Runs (the active body's gait follows it, NpcView.TravelSpeed). Same rule for Montera/Nordmar arenas (any Arena/Sparring quest)."
+}

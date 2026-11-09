@@ -1,0 +1,19 @@
+{
+  "name": "fix204_perception_cliff",
+  "verifies": "fix-204 [owner]: wolves at the foot of the 12 m Nordmar Hammerclan landscape cliff (terrain_ledges control spot) do not notice the hero standing on top (height > 10 m, or no free line of sight from their knee-high eyes over the edge); control: the hero walks down next to them and they attack",
+  "fresh": true,
+  "timeout": 120,
+  "notes": "Needs the fix-204 build (creatures need sight beyond 10 m). The geometry probe (Work/handoff/fix-204.md) found from this cliff top 63 ground spots 3-10 m below within 20 m: G3 senses all 63, the port 28 (8 by the 10 m nose range, 20 with open sight).",
+  "steps": [
+    "god; notips; safe; time 12",
+    "tp pos=451.0,192.5,1070.0",
+    "calm radius=60",
+    "spawn Wolf attitude=hostile near=443.0,180.0,1070.0 count=2 as=w",
+    "wait 8",
+    "expect fighting:$w=False",
+    "log -- control: the hero next to the pack",
+    "tp pos=444.0,180.0,1066.0",
+    "wait 8 until=fighting:$w",
+    "expect fighting:$w"
+  ]
+}

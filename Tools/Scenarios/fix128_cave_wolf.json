@@ -1,0 +1,29 @@
+{
+  "name": "fix128_cave_wolf",
+  "verifies": "fix-128 (owner: 'again in a cave, a wolf is somewhere inside the rock'): Montera_Wolf_01#0c6fefe2 stood at (82.19, 65.53, 36.86) in save076, 4 m behind the wall of the Montera wolf cave (Dungeon_V01_S01_05) inside the hill (G3Cli collision column: only the landscape 33.7 m above, nothing under it); its simulated wander point (spawn + offset at the spawn's height) lay in the rock and the shown pose found no floor. A wolf put there, and one put on the cave roof's top (79.61, 70.47, 32.39: roof over the floor 65.22, the hill 100.14), go onto the true cave floor (CaveGround / CaveFloorRules: NavMesh points around, never up through a ceiling); the roof top carries no NavMesh and judges RoofTop, the floor under it TrueFloor",
+  "fresh": true,
+  "timeout": 300,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp 79.61,65.3,32.39",
+    "wait until=navat:79.61,65.22,32.39 timeout=90",
+    "expect cavestand:79.61,65.22,32.39=TrueFloor",
+    "expect cavestand:79.61,70.47,32.39=RoofTop",
+    "expect cavestand:82.19,65.53,36.86=NoFloor",
+    "expect navat:79.61,70.47,32.39=False",
+    "spawn Wolf attitude=neutral near=79.61,65.22,32.39 dist=1 as=w",
+    "calm 60",
+    "set snaps from=cavesnaps",
+    "caveplace $w at=82.19,65.53,36.86 wait=4",
+    "expect cavesnaps>$snaps",
+    "expect npccave:$w=TrueFloor",
+    "expect npcy:$w<68",
+    "shot fix128_wolf_out_of_rock look=$w",
+    "caveplace $w at=79.61,70.47,32.39 wait=4",
+    "expect npccave:$w=TrueFloor",
+    "expect npcy:$w<67",
+    "shot fix128_wolf_off_roof look=$w",
+    "probe $w"
+  ],
+  "notes": "Owner workaround (demo/dev build, F10): kill Montera_Wolf_01#0c6fefe2 hero, or bring Montera_Wolf_01#0c6fefe2 dist=4. Log lines: '[npc] <name> cave guard: on a cave roof / in the rock at ..., moved N m to the cave floor ...', also 'spawned' / 'fall recovery' / 'stuck'. The cave guard checks every 2 s, so caveplace waits 4 s. Offline: G3Cli collision caveroofs (walkable cave triangles on roof/wall tops before fix-99 301 102, with fix-99 1 558, dropped by CellNavMeshes with fix-128; NPC spawns/slots inside cave bounds: 2 with no floor). fix-136: on the roof top the wolf's own ground pick (NpcGround.TryFloor refuses a cave roof top, NpcWalker) already sets it straight down onto the floor below before the 2 s cave guard runs, so that case is checked by npccave/npcy, not by cavesnaps (demo 2026-10-19: snaps +0, wolf at y 65.22 TrueFloor). The dev console's line height (descenders of the hint line) is checked by hand: F10."
+}

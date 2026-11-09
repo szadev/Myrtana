@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <Style src="Hud.uss" />
+    <ui:VisualElement name="hud" class="hud" picking-mode="Ignore">
+        <ui:Label name="interact-prompt" class="interact-prompt" picking-mode="Ignore" />
+        <ui:Label name="hud-message" class="hud-message" picking-mode="Ignore" />
+        <ui:VisualElement name="dialog" class="dialog">
+            <ui:Label name="dialog-speaker" class="dialog-speaker" />
+            <ui:Label name="dialog-line" class="dialog-line" />
+            <ui:ScrollView name="dialog-options" class="dialog-options" />
+            <ui:Label name="dialog-hint" class="dialog-hint" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

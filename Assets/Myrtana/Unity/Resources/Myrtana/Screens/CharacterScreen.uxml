@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <Style src="Screens.uss" />
+    <ui:VisualElement name="character-screen" class="screen">
+        <ui:Label name="screen-title" class="screen-title" />
+        <ui:VisualElement class="screen-body">
+            <ui:VisualElement name="experience" class="screen-column" />
+            <ui:VisualElement name="attributes" class="screen-column" />
+            <ui:VisualElement name="reputation" class="screen-column" />
+        </ui:VisualElement>
+        <ui:Label name="screen-hint" class="screen-hint" />
+    </ui:VisualElement>
+</ui:UXML>

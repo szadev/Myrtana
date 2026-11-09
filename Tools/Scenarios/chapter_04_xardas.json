@@ -1,0 +1,30 @@
+{
+  "name": "chapter_04_xardas",
+  "verifies": "story-walk ch4: Xardas' tower in Nordmar (EnterArea Xardas_FindXardas); his plan: find the five artefacts",
+  "fresh": true,
+  "timeout": 900,
+  "notes": "EnterArea is counted once a second from the hero's reported pose (QuestAreaCounter). FILLER4 is a News entry that plays when the talk starts; FILLER7 is its sub-choice. Staff and scepter quests (NEWM0055/56) belong to the Adanos path.",
+  "steps": [
+    "god; notips; safe; time 12; level 25; attr STR 250; attr DEX 150; equip It_1H_Sword_01",
+    "log -- setup: the state after chapter 03",
+    "enclave Ardea liberate",
+    "flag Diego_WarIsLost,Diego_FindXardas",
+    "played BPANKRATZ31451,FILLER65,FILLER925,BPANKRATZ31453,BPANKRATZ31454,BPANKRATZ31455",
+    "flag Gorn_RebsThere",
+    "quest Gorn_ShowReddock Success",
+    "played BPANKRATZ31458,BPANKRATZ31442,BPANKRATZ31445,BPANKRATZ31446,BPANKRATZ31447",
+    "flag Roland_HisDuties,Roland_Paladin",
+    "give It_Teleport_VangardTempel",
+    "quest PC_Hero_FIndTeleportToKing Success",
+    "played BPANKRATZ31024,BPANKRATZ31084,SKALVERAM3166",
+    "log -- chapter 04",
+    "tp zone:Xardas_Tower",
+    "wait until=quest:Xardas_FindXardas=Success timeout=10",
+    "tp npc:Xardas dist=2",
+    "ask Xardas FILLER7",
+    "expect given:FILLER4",
+    "expect flag:Xardas_Plan",
+    "expect quest:PC_Hero_FindArtefacts=Running",
+    "shot ch04_xardas look=npc:Xardas"
+  ]
+}

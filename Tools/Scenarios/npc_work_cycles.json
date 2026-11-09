@@ -1,0 +1,26 @@
+{
+  "name": "npc_work_cycles",
+  "verifies": "par-npc2 #32: the Hammer-mine smith goes Forge, Anvil, Forge, Anvil, WaterBarrel (task Smith#1..5); a sweeper sweeps three CleanFloor spots (SweepFloor#1..3) — watch task/step in the npctask lines. fix-46 (r28: smith 'Anvil' task None, Flint SweepFloor#1 for 70 s): NrdSmith_01 lives in sector G3_Nordmar_01_Hammerclan_Mine_NPC_02, off at a new game (G3 enables it later), so it was never processed (IsInWorld false); and 'tp pos=610,1290' put the hero 109 m above the mine. Flint's CleanFloor point has no other within 10 m (no anchor): his cycle is #1 again and again (by the rules). Slave_03#befcb405 in Ishtar has three spots within 10 m. Timeout above the waits.",
+  "fresh": true,
+  "timeout": 340,
+  "steps": [
+    "safe; god; time 10",
+    "sector G3_Nordmar_01_Hammerclan_Mine_NPC_02",
+    "tp npc:NrdSmith_01 dist=3",
+    "wait 5",
+    "npctask NrdSmith_01",
+    "shot scn_npc_smith look=NrdSmith_01",
+    "wait 60",
+    "npctask NrdSmith_01",
+    "tp npc:Slave_03#befcb405 dist=3",
+    "wait 5",
+    "npctask Slave_03#befcb405",
+    "wait 70",
+    "npctask Slave_03#befcb405",
+    "wait 70",
+    "npctask Slave_03#befcb405",
+    "tp pos=560,553",
+    "wait 5",
+    "npctask Flint"
+  ]
+}

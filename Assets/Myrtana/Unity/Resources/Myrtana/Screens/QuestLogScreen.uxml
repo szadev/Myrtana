@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <Style src="Screens.uss" />
+    <ui:VisualElement name="questlog-screen" class="screen">
+        <ui:Label name="screen-title" class="screen-title" />
+        <ui:VisualElement class="screen-body">
+            <ui:ScrollView name="quest-list" class="screen-list" />
+            <ui:ScrollView name="quest-detail" class="screen-detail" />
+        </ui:VisualElement>
+        <ui:Label name="screen-hint" class="screen-hint" />
+    </ui:VisualElement>
+</ui:UXML>

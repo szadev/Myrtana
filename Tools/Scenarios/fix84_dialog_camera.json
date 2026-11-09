@@ -1,0 +1,28 @@
+{
+  "name": "fix84_dialog_camera",
+  "verifies": "fix-84 item 5: in Reddock's cave the dialog camera stays inside the cave — never inside or behind rock (dlgcamblock = 0), never far above the heads",
+  "fresh": true,
+  "timeout": 180,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp npc:Norris dist=1.5",
+    "wait 1",
+    "talk Norris",
+    "wait until=dialog timeout=8",
+    "wait 2",
+    "expect dlgcamblock<0.05",
+    "expect dlgcamheight<1.8",
+    "lines max=6",
+    "expect dlgcamblock<0.05",
+    "expect dlgcamheight<1.8",
+    "abort",
+    "log -- the hero alone at Kent (open ground) keeps the presets",
+    "tp npc:Kent dist=2",
+    "talk Kent",
+    "wait until=dialog timeout=8",
+    "wait 2",
+    "expect dlgcamblock<0.05",
+    "abort"
+  ],
+  "notes": "Replace Norris by the owner's cave NPC if it differs (owner screenshot: Reddock cave). dlgcamblock = metres the camera stands beyond the free view from the look point (two-way trace, back faces included); dlgcamheight = camera height over the higher head (presets reach at most ~1.6 m)."
+}

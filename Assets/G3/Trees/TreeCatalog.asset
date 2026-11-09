@@ -1,0 +1,148 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3edcdea4367d81541810eaf3c57fa02e, type: 3}
+  m_Name: TreeCatalog
+  m_EditorClassIdentifier: G3.Unity::G3.Unity.TreeCatalog
+  entries:
+  - key: DouglasFir
+    prefabs:
+    - {fileID: 1210239571720232358, guid: 66cf40f74ad88e44d990dd26d20ba363, type: 3}
+    - {fileID: 7939498753622266277, guid: 7f9e8376bea9df24190206175be0adf2, type: 3}
+  - key: DouglasFir_winter
+    prefabs:
+    - {fileID: 2586567006097062068, guid: 1de00fef10ba90c46bf17121a033f06c, type: 3}
+    - {fileID: 8488539034028070283, guid: 28652ae1b55526f48acf8b68d8cfebfd, type: 3}
+  - key: FraserFir
+    prefabs:
+    - {fileID: 7939498753622266277, guid: 7f9e8376bea9df24190206175be0adf2, type: 3}
+  - key: FraserFir_winter
+    prefabs:
+    - {fileID: 8488539034028070283, guid: 28652ae1b55526f48acf8b68d8cfebfd, type: 3}
+  - key: LongleafPine
+    prefabs:
+    - {fileID: 2015233761694590332, guid: bb8b7e662f1791d44a90836d88e77af3, type: 3}
+  - key: MontereyCypress
+    prefabs:
+    - {fileID: 7939498753622266277, guid: 7f9e8376bea9df24190206175be0adf2, type: 3}
+  - key: ItalianCypress
+    prefabs:
+    - {fileID: 1210239571720232358, guid: 66cf40f74ad88e44d990dd26d20ba363, type: 3}
+  - key: Bush
+    prefabs:
+    - {fileID: 1280071456879199899, guid: 540aeff5cc23d0441844486ac308216b, type: 3}
+  - key: Bush_winter
+    prefabs:
+    - {fileID: 2122868950940319042, guid: cee0026ecdf803045a44517588699040, type: 3}
+  - key: CarolinaBuckthorn
+    prefabs:
+    - {fileID: 5788147524968229368, guid: 5e38c2407e18b044b8b227b86a0a2afa, type: 3}
+  - key: BulfordHolly
+    prefabs:
+    - {fileID: 5788147524968229368, guid: 5e38c2407e18b044b8b227b86a0a2afa, type: 3}
+  - key: CrepeMyrtle
+    prefabs:
+    - {fileID: 5788147524968229368, guid: 5e38c2407e18b044b8b227b86a0a2afa, type: 3}
+  - key: CrabApple
+    prefabs:
+    - {fileID: 5788147524968229368, guid: 5e38c2407e18b044b8b227b86a0a2afa, type: 3}
+  - key: GSApple
+    prefabs:
+    - {fileID: 5788147524968229368, guid: 5e38c2407e18b044b8b227b86a0a2afa, type: 3}
+  - key: PawPaw
+    prefabs:
+    - {fileID: 5788147524968229368, guid: 5e38c2407e18b044b8b227b86a0a2afa, type: 3}
+  - key: Linden
+    prefabs:
+    - {fileID: 2193079875533868788, guid: 82333ae427b1e6344982d07c309b078f, type: 3}
+  - key: PinOak
+    prefabs:
+    - {fileID: 1225788546995557082, guid: 3a49a7019cd031544aee844e6a3a730d, type: 3}
+  - key: RedOak
+    prefabs:
+    - {fileID: 1225788546995557082, guid: 3a49a7019cd031544aee844e6a3a730d, type: 3}
+  - key: Sycamore
+    prefabs:
+    - {fileID: 1225788546995557082, guid: 3a49a7019cd031544aee844e6a3a730d, type: 3}
+    - {fileID: 2193079875533868788, guid: 82333ae427b1e6344982d07c309b078f, type: 3}
+  - key: HoneyLocust
+    prefabs:
+    - {fileID: 2193079875533868788, guid: 82333ae427b1e6344982d07c309b078f, type: 3}
+  - key: PagodaTree
+    prefabs:
+    - {fileID: 1225788546995557082, guid: 3a49a7019cd031544aee844e6a3a730d, type: 3}
+  - key: EuropeanAspen
+    prefabs:
+    - {fileID: 2193079875533868788, guid: 82333ae427b1e6344982d07c309b078f, type: 3}
+  - key: CoconutPalm
+    prefabs:
+    - {fileID: 6255315937654092656, guid: 1539e3b383a46bf40b509a611d8ff5f7, type: 3}
+  - key: CurlyPalm
+    prefabs:
+    - {fileID: 6255315937654092656, guid: 1539e3b383a46bf40b509a611d8ff5f7, type: 3}
+  - key: FanPalm
+    prefabs:
+    - {fileID: 6255315937654092656, guid: 1539e3b383a46bf40b509a611d8ff5f7, type: 3}
+  - key: DatePalm
+    prefabs:
+    - {fileID: 7851362817710103266, guid: 6213f474da5bfa8408df51a8af03701d, type: 3}
+  - key: UmbrellaThorn
+    prefabs:
+    - {fileID: 1200874741665697867, guid: 5608d6089dce33348bf5b096dac530c7, type: 3}
+  - key: Tamarind
+    prefabs:
+    - {fileID: 1200874741665697867, guid: 5608d6089dce33348bf5b096dac530c7, type: 3}
+  - key: Gimlet
+    prefabs:
+    - {fileID: 1200874741665697867, guid: 5608d6089dce33348bf5b096dac530c7, type: 3}
+  - key: GhostGum
+    prefabs:
+    - {fileID: 1200874741665697867, guid: 5608d6089dce33348bf5b096dac530c7, type: 3}
+  - key: RedGum
+    prefabs:
+    - {fileID: 1200874741665697867, guid: 5608d6089dce33348bf5b096dac530c7, type: 3}
+  - key: JoshuaTree
+    prefabs:
+    - {fileID: 1200874741665697867, guid: 5608d6089dce33348bf5b096dac530c7, type: 3}
+  categoryDefaults:
+  - category: 0
+    prefabs:
+    - {fileID: 1210239571720232358, guid: 66cf40f74ad88e44d990dd26d20ba363, type: 3}
+    - {fileID: 7939498753622266277, guid: 7f9e8376bea9df24190206175be0adf2, type: 3}
+    winterPrefabs:
+    - {fileID: 2586567006097062068, guid: 1de00fef10ba90c46bf17121a033f06c, type: 3}
+    - {fileID: 8488539034028070283, guid: 28652ae1b55526f48acf8b68d8cfebfd, type: 3}
+  - category: 1
+    prefabs:
+    - {fileID: 1225788546995557082, guid: 3a49a7019cd031544aee844e6a3a730d, type: 3}
+    - {fileID: 2193079875533868788, guid: 82333ae427b1e6344982d07c309b078f, type: 3}
+    - {fileID: 5788147524968229368, guid: 5e38c2407e18b044b8b227b86a0a2afa, type: 3}
+    winterPrefabs:
+    - {fileID: 1225788546995557082, guid: 3a49a7019cd031544aee844e6a3a730d, type: 3}
+    - {fileID: 2193079875533868788, guid: 82333ae427b1e6344982d07c309b078f, type: 3}
+    - {fileID: 5788147524968229368, guid: 5e38c2407e18b044b8b227b86a0a2afa, type: 3}
+  - category: 2
+    prefabs:
+    - {fileID: 6255315937654092656, guid: 1539e3b383a46bf40b509a611d8ff5f7, type: 3}
+    - {fileID: 7851362817710103266, guid: 6213f474da5bfa8408df51a8af03701d, type: 3}
+    winterPrefabs:
+    - {fileID: 6255315937654092656, guid: 1539e3b383a46bf40b509a611d8ff5f7, type: 3}
+    - {fileID: 7851362817710103266, guid: 6213f474da5bfa8408df51a8af03701d, type: 3}
+  - category: 3
+    prefabs:
+    - {fileID: 1200874741665697867, guid: 5608d6089dce33348bf5b096dac530c7, type: 3}
+    winterPrefabs:
+    - {fileID: 1200874741665697867, guid: 5608d6089dce33348bf5b096dac530c7, type: 3}
+  - category: 4
+    prefabs:
+    - {fileID: 1280071456879199899, guid: 540aeff5cc23d0441844486ac308216b, type: 3}
+    winterPrefabs:
+    - {fileID: 2122868950940319042, guid: cee0026ecdf803045a44517588699040, type: 3}

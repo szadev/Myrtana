@@ -1,0 +1,33 @@
+{
+  "name": "fix159_spell_flight",
+  "verifies": "fix-159 (owner: 'the fireball and other magic do not fly straight but turn after a moving target'): G3 MagicProjectile (Script_Game 0x10052db0) flies PathStyle 3 Missile (homing) only when the cast is a PowerCast with a focus, else 0 Line, aimed once at release. A plain fireball / ice lance at a target flies Line and never turns; a powered one (held past 0.7 s) homes (Missile); a power cast without a focus flies Line.",
+  "fresh": true,
+  "timeout": 200,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_1; calm radius=60",
+    "attr INT 300; attr MP 2000",
+    "log -- plain fireball at the wolf: Line, no turn",
+    "spawn Wolf attitude=neutral dist=12 side=front as=w1",
+    "cast It_Spell_Fireball target=$w1 hold=0.3",
+    "wait 0.3",
+    "expect missileflight=Line",
+    "expect missileturn<1",
+    "despawn $w1",
+    "log -- plain ice lance at a fresh wolf: Line",
+    "spawn Wolf attitude=neutral dist=12 side=front as=w2",
+    "cast It_Spell_Icelance target=$w2 hold=0.3",
+    "wait 0.3",
+    "expect missileflight=Line",
+    "expect missileturn<1",
+    "despawn $w2",
+    "log -- powered fireball at a fresh wolf held still: Missile (homing, G3 PowerCast)",
+    "spawn Wolf attitude=neutral dist=12 side=front as=w3",
+    "freeze only=$w3",
+    "wait 1",
+    "cast It_Spell_Fireball target=$w3 hold=3",
+    "wait 0.3",
+    "expect missileflight=Missile"
+  ],
+  "notes": "missileflight/missileturn read the last spell missile launched (Projectile.LastSpellFlight / LastSpellTurnDegrees). The powered step needs the focus on the wolf when the spell leaves the hand (the cast line prints 'at the release <focus>'); without one the powered missile also flies Line, as in G3. fix-166 (b1019d FAIL 'missileflight=Missile: was Line'): one wolf (400 HP; 'hp max=' does not raise an NPC's maximum) took both plain casts: hurt it fought back and its bite cut the power cast (Reaction), or it was dead / out of the focus at the release; each part now has a fresh wolf, the powered one frozen."
+}

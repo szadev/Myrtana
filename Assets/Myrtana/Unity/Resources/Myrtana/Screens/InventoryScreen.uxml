@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <Style src="Screens.uss" />
+    <ui:VisualElement name="inventory-screen" class="screen">
+        <ui:VisualElement class="screen-header">
+            <ui:Label name="screen-title" class="screen-title" />
+            <ui:Label name="gold" class="screen-gold" />
+        </ui:VisualElement>
+        <ui:VisualElement class="screen-body">
+            <ui:ScrollView name="item-list" class="screen-list" />
+            <ui:VisualElement class="screen-detail">
+                <ui:Image name="item-icon" class="item-detail-icon" />
+                <ui:Label name="item-name" class="screen-section-title" />
+                <ui:Label name="item-description" class="quest-line" />
+                <ui:VisualElement name="item-numbers" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:Label name="screen-hint" class="screen-hint" />
+    </ui:VisualElement>
+</ui:UXML>

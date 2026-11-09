@@ -1,0 +1,313 @@
+// Remaster GI (Docs/remaster-world.md section 16, agent remaster-gi). Maths mirrored in WorldGi (tested).
+// A camera-centred radiance volume (128x64x128 voxels, toroidal: world voxel w at storage w mod dims) is filled from the
+// frame: one thread per voxel projects its centre into the camera; a surface inside the voxel stores the lit colour of
+// that pixel (the frame after the light ratio = what the surface really reflects), a surface behind it marks the voxel
+// empty, a closer one keeps it (HSGI "screen injection", GDC 2023). Irradiance probes (one per 2x2x2 voxels, ambient
+// cube) trace rays through the volume and keep two things per face: the bounce (cosine-weighted radiance of the surfaces
+// the rays hit x gain; never-seen space under the top-down occluder map = solid, dim) and the sky visibility (the
+// cosine-weighted share of rays that escape). The ratio pass lights a pixel with G3's own ambient x that visibility
+// (G3's authored fill, occluded for real) + the bounce (colour from the lit surroundings, torches included). Probes
+// inside walls / rock (most rays hit at once) are filled from valid neighbours (Dilate).
+#pragma kernel ClearVox
+#pragma kernel ClearProbes
+#pragma kernel ScrollVox
+#pragma kernel ScrollProbes
+#pragma kernel Inject
+#pragma kernel InjectScatter
+#pragma kernel UpdateProbes
+#pragma kernel Dilate
+
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+
+#define VOX_X 128
+#define VOX_Y 64
+#define VOX_Z 128
+#define PR_X 64
+#define PR_Y 32
+#define PR_Z 64
+
+RWTexture3D<float4> _GiVox;                 // rgb radiance (linear), a occupancy 0..1, -1 = never seen
+RWStructuredBuffer<float4> _GiProbes;       // 7 per probe: faces 0..5 (rgb bounce irradiance, a sky visibility), 6 = (confidence, validity)
+RWTexture3D<float4> _GiCube0, _GiCube1, _GiCube2, _GiCube3, _GiCube4, _GiCube5;   // final (dilated) faces, as the buffer
+RWTexture3D<float> _GiConf;                 // final weight
+
+int4 _GiOrigin;        // voxel origin (world voxel index of the window min corner)
+int4 _GiOldOrigin;     // previous origin (scroll kernels)
+float4 _GiParams;      // x voxel size (m), y inject rate, z frame index, w hysteresis
+float4 _GiParams2;     // x rays, y ray length (m), z cadence, w unseen albedo
+float4 _GiParams3;     // x bounce gain (hit radiance multiplier)
+float4x4 _GiVP;        // non-jittered view-projection (GPU, render-into-texture convention like UNITY_MATRIX_VP)
+float4 _GiZParams;     // _ZBufferParams of the camera
+float4 _GiScreen;      // x 1 = reversed z, y 1 = flip clip y to uv
+float4x4 _GiInvVP;     // inverse of _GiVP (scatter)
+float4 _GiScatter;     // xy size of the 1/4-res colour (scatter threads)
+float4x4 _GiRot;       // random rotation of the probe ray set (per frame)
+float4 _GiAmb[6];      // G3's ambient irradiance along +x -x +y -y +z -z (after v2's balance)
+Texture2D<float> _GiDepth;
+Texture2D<float4> _GiColor;   // the frame before the ratio, 1/4 res
+Texture2D<float4> _GiRatio;   // the ratio (rgb), 1/2 res
+Texture2D<float2> _G3SkyOccMap;   // R highest solid surface, G highest crown (world y)
+float4 _G3SkyOccWindow;           // x min x, y min z, z size, w 1 = valid
+
+SamplerState sampler_PointClamp;
+SamplerState sampler_LinearClamp;
+
+int3 Dims() { return int3(VOX_X, VOX_Y, VOX_Z); }
+int3 PDims() { return int3(PR_X, PR_Y, PR_Z); }
+int3 Mod3(int3 a, int3 m) { return a & (m - 1); }   // dims are powers of two: two's complement & = Euclidean modulo
+uint PIndex(int3 s) { return (uint)(s.x + s.y * PR_X + s.z * PR_X * PR_Y); }
+
+float3 Amb(float3 n)
+{
+    float3 n2 = n * n;
+    return n2.x * (n.x >= 0 ? _GiAmb[0].rgb : _GiAmb[1].rgb)
+         + n2.y * (n.y >= 0 ? _GiAmb[2].rgb : _GiAmb[3].rgb)
+         + n2.z * (n.z >= 0 ? _GiAmb[4].rgb : _GiAmb[5].rgb);
+}
+
+float SolidTop(float2 xz)
+{
+    if (_G3SkyOccWindow.w <= 0) return -1e5;
+    float2 uv = (xz - _G3SkyOccWindow.xy) / _G3SkyOccWindow.z;
+    if (any(uv < 0) || any(uv > 1)) return -1e5;
+    return _G3SkyOccMap.SampleLevel(sampler_LinearClamp, uv, 0).r;   // bilinear like the ratio pass (snow3)
+}
+
+// ------------------------------------------------------------------ clears
+
+[numthreads(4, 4, 4)]
+void ClearVox(uint3 id : SV_DispatchThreadID)
+{
+    if (any(id >= (uint3)Dims())) return;
+    _GiVox[id] = float4(0, 0, 0, -1);
+}
+
+void ClearProbe(int3 s)
+{
+    uint b = PIndex(s) * 7;
+    [unroll] for (int f = 0; f < 7; f++) _GiProbes[b + f] = 0;
+    _GiCube0[s] = 0; _GiCube1[s] = 0; _GiCube2[s] = 0; _GiCube3[s] = 0; _GiCube4[s] = 0; _GiCube5[s] = 0; _GiConf[s] = 0;
+}
+
+[numthreads(4, 4, 4)]
+void ClearProbes(uint3 id : SV_DispatchThreadID)
+{
+    if (any(id >= (uint3)PDims())) return;
+    ClearProbe((int3)id);
+}
+
+// a storage cell whose world index (under the new origin) was outside the old window entered with the scroll (WorldGi.Entered)
+bool Entered(int3 s, int3 oldO, int3 newO, int3 dims)
+{
+    int3 w = newO + Mod3(s - newO, dims);
+    return any(w < oldO) || any(w >= oldO + dims);
+}
+
+[numthreads(4, 4, 4)]
+void ScrollVox(uint3 id : SV_DispatchThreadID)
+{
+    if (any(id >= (uint3)Dims())) return;
+    if (Entered((int3)id, _GiOldOrigin.xyz, _GiOrigin.xyz, Dims())) _GiVox[id] = float4(0, 0, 0, -1);
+}
+
+[numthreads(4, 4, 4)]
+void ScrollProbes(uint3 id : SV_DispatchThreadID)
+{
+    if (any(id >= (uint3)PDims())) return;
+    if (Entered((int3)id, _GiOldOrigin.xyz >> 1, _GiOrigin.xyz >> 1, PDims())) ClearProbe((int3)id);
+}
+
+// ------------------------------------------------------------------ injection (WorldGi.Classify / Inject)
+
+[numthreads(4, 4, 4)]
+void Inject(uint3 id : SV_DispatchThreadID)
+{
+    if (any(id >= (uint3)Dims())) return;
+    if (((id.x + id.y + id.z + (uint)_GiParams.z) & 1) != 0) return;   // half the voxels per frame (checkerboard)
+    float voxel = _GiParams.x;
+    int3 w = _GiOrigin.xyz + Mod3((int3)id - _GiOrigin.xyz, Dims());
+    float3 c = (w + 0.5) * voxel;
+    float4 cs = mul(_GiVP, float4(c, 1));
+    if (cs.w <= 0.3) return;
+    float3 ndc = cs.xyz / cs.w;
+    if (any(abs(ndc.xy) > 1)) return;
+    if (_GiScreen.y > 0.5) ndc.y = -ndc.y;   // C#: the render-into-texture flip baked into _GiVP (ComputeNormalizedDeviceCoordinates)
+    float2 uv = ndc.xy * 0.5 + 0.5;
+    float raw = _GiDepth.SampleLevel(sampler_PointClamp, uv, 0);
+    bool sky = _GiScreen.x > 0 ? raw <= 1e-6 : raw >= 1 - 1e-6;
+    float scene = sky ? 1e9 : 1.0 / (_GiZParams.z * raw + _GiZParams.w);
+    float d = scene - cs.w;
+    float h = voxel * 0.6;
+    float4 old = _GiVox[id];
+    bool first = old.a < 0;
+    float rate = _GiParams.y;
+    if (abs(d) <= h)
+    {
+        float3 col = _GiColor.SampleLevel(sampler_LinearClamp, uv, 0).rgb * _GiRatio.SampleLevel(sampler_PointClamp, uv, 0).rgb;
+        col = min(max(col, 0), 32);
+        _GiVox[id] = first ? float4(col, 1) : float4(lerp(old.rgb, col, rate), lerp(old.a, 1, rate));
+    }
+    else if (d > h)
+    {
+        _GiVox[id] = first ? float4(0, 0, 0, 0) : float4(old.rgb, old.a * (1 - rate));
+    }
+}
+
+// scatter (in-engine session 4: the gather above marks only voxels whose centre lies within 0.6 voxel of the surface along
+// the view ray; ~90 % of the walls of a shed stayed unseen): every 1/4-res pixel writes its colour into the voxel that
+// contains its surface point
+[numthreads(8, 8, 1)]
+void InjectScatter(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= (uint)_GiScatter.x || id.y >= (uint)_GiScatter.y) return;
+    float2 uv = (id.xy + 0.5) / _GiScatter.xy;
+    float raw = _GiDepth.SampleLevel(sampler_PointClamp, uv, 0);
+    bool sky = _GiScreen.x > 0 ? raw <= 1e-6 : raw >= 1 - 1e-6;
+    if (sky) return;
+    float2 ndc = uv * 2 - 1;
+    if (_GiScreen.y > 0.5) ndc.y = -ndc.y;
+    float4 wp = mul(_GiInvVP, float4(ndc, raw, 1));
+    float3 p = wp.xyz / wp.w;
+    float voxel = _GiParams.x;
+    int3 vi = (int3)floor(p / voxel);
+    int3 rel = vi - _GiOrigin.xyz;
+    if (any(rel < 0) || any(rel >= Dims())) return;
+    int3 sidx = Mod3(vi, Dims());
+    float3 col = _GiColor.SampleLevel(sampler_LinearClamp, uv, 0).rgb * _GiRatio.SampleLevel(sampler_PointClamp, uv, 0).rgb;
+    col = min(max(col, 0), 32);
+    float4 old = _GiVox[sidx];
+    float rate = _GiParams.y;
+    _GiVox[sidx] = old.a < 0 ? float4(col, 1) : float4(lerp(old.rgb, col, rate), lerp(max(old.a, 0), 1, rate * 2));
+}
+
+// ------------------------------------------------------------------ probe tracing
+
+static const float3 kFaces[6] = { float3(1, 0, 0), float3(-1, 0, 0), float3(0, 1, 0), float3(0, -1, 0), float3(0, 0, 1), float3(0, 0, -1) };
+
+float3 Fibonacci(int i, int n)
+{
+    float golden = PI * (3 - sqrt(5.0));
+    float y = 1 - (i + 0.5) * 2.0 / n;
+    float r = sqrt(max(0, 1 - y * y));
+    float a = golden * i;
+    return float3(cos(a) * r, y, sin(a) * r);
+}
+
+[numthreads(4, 4, 4)]
+void UpdateProbes(uint3 id : SV_DispatchThreadID)
+{
+    if (any(id >= (uint3)PDims())) return;
+    uint cadence = (uint)max(1, (int)_GiParams2.z);
+    if (((id.x + id.y * 7 + id.z * 13) % cadence) != ((uint)_GiParams.z % cadence)) return;
+    float voxel = max(_GiParams.x, 0.25);   // dx12-1: never 0 (the ray march steps by it)
+    float spacing = voxel * 2;
+    int3 po = _GiOrigin.xyz >> 1;
+    int3 wp = po + Mod3((int3)id - po, PDims());
+    float3 pw = (wp + 0.5) * spacing;
+    uint b = PIndex((int3)id) * 7;
+    float4 meta = _GiProbes[b + 6];
+    float conf = meta.x;
+    float3 mean = 0;
+    [unroll] for (int f0 = 0; f0 < 6; f0++) mean += _GiProbes[b + f0].rgb;
+    float3 ambMean = (Amb(float3(0, 1, 0)) + Amb(float3(0, -1, 0))) * 0.5;
+    // never-seen solid space: a dull surface lit by what this probe gathers (+ a little of G3's fill)
+    float3 unseen = ((conf > 0 ? mean / 6 : 0) + ambMean * 0.25) * _GiParams2.w;
+    float gain = _GiParams3.x;
+
+    // dx12-1: hard bounds whatever the parameters hold (unset = 0 would make the march below endless: a GPU hang / TDR)
+    int rays = clamp((int)_GiParams2.x, 1, 64);
+    float len = clamp(_GiParams2.y, 0, 128);
+    float3 hit[6] = { (float3)0, (float3)0, (float3)0, (float3)0, (float3)0, (float3)0 };
+    float vis[6] = { 0, 0, 0, 0, 0, 0 };
+    float cw[6] = { 0, 0, 0, 0, 0, 0 };
+    int nearHits = 0;
+    [loop] for (int r = 0; r < rays; r++)
+    {
+        float3 dir = normalize(mul((float3x3)_GiRot, Fibonacci(r, rays)));
+        float3 L = 0;
+        float T = 1;
+        bool escaped = false, nearHit = false;
+        int steps = 0;
+        [loop] for (float t = voxel * 0.5; t < len && steps < 512; t += voxel, steps++)
+        {
+            float3 q = pw + dir * t;
+            int3 vi = (int3)floor(q / voxel);
+            int3 rel = vi - _GiOrigin.xyz;
+            if (any(rel < 0) || any(rel >= Dims())) { escaped = true; break; }
+            float4 v = _GiVox[Mod3(vi, Dims())];
+            if (v.a < 0)
+            {
+                if (q.y < SolidTop(q.xz) - 0.3) { L += T * unseen; T = 0; }
+            }
+            else
+            {
+                float o = saturate(v.a);
+                L += T * o * v.rgb * gain;
+                T *= 1 - o;
+            }
+            if (t <= voxel * 1.6 && T < 0.5) nearHit = true;   // the ray is blocked right at the probe
+            if (T < 0.05) break;
+        }
+        // beyond the volume: the occluder map (caves, roofs, mountains) blocks the sky
+        if (T > 0.05)
+        {
+            [unroll] for (int k = 1; k <= 4; k++)
+            {
+                float t = (escaped ? 0 : len) + k * k * 4.0;
+                float3 q = pw + dir * t;
+                if (q.y < SolidTop(q.xz) - 0.5) { L += T * unseen; T = 0; break; }
+            }
+        }
+        if (T <= 0.05) T = 0;
+        if (nearHit) nearHits++;
+        [unroll] for (int f = 0; f < 6; f++)
+        {
+            float c = max(0, dot(dir, kFaces[f]));
+            hit[f] += L * c; vis[f] += T * c; cw[f] += c;
+        }
+    }
+    float hyst = _GiParams.w;
+    bool first = conf <= 0;
+    float valid = nearHits > rays * 0.4 ? 0 : 1;   // WorldGi.Inside
+    [unroll] for (int f = 0; f < 6; f++)
+    {
+        float4 e = float4(hit[f] * (4.0 / rays), cw[f] > 0 ? vis[f] / cw[f] : 1);
+        float4 o = _GiProbes[b + f];
+        _GiProbes[b + f] = first ? e : lerp(e, o, hyst);
+    }
+    _GiProbes[b + 6] = float4(min(1, conf + 0.25), first ? valid : lerp(meta.y, valid, 0.5), 0, 0);
+}
+
+// probes inside walls / rock / terrain take the mean of their valid 6-neighbours (trilinear sampling stays clean)
+[numthreads(4, 4, 4)]
+void Dilate(uint3 id : SV_DispatchThreadID)
+{
+    if (any(id >= (uint3)PDims())) return;
+    uint b = PIndex((int3)id) * 7;
+    float4 meta = _GiProbes[b + 6];
+    float4 e[6];
+    float wt = meta.x;
+    if (meta.x > 0 && meta.y > 0.5)
+    {
+        [unroll] for (int f = 0; f < 6; f++) e[f] = _GiProbes[b + f];
+    }
+    else
+    {
+        [unroll] for (int f = 0; f < 6; f++) e[f] = 0;
+        float n = 0, cs = 0;
+        static const int3 kN[6] = { int3(1, 0, 0), int3(-1, 0, 0), int3(0, 1, 0), int3(0, -1, 0), int3(0, 0, 1), int3(0, 0, -1) };
+        [unroll] for (int k = 0; k < 6; k++)
+        {
+            uint nb = PIndex(Mod3((int3)id + kN[k], PDims())) * 7;
+            float4 nm = _GiProbes[nb + 6];
+            if (nm.x <= 0 || nm.y <= 0.5) continue;
+            [unroll] for (int f = 0; f < 6; f++) e[f] += _GiProbes[nb + f];
+            n += 1; cs += nm.x;
+        }
+        if (n > 0) { [unroll] for (int f = 0; f < 6; f++) e[f] /= n; wt = cs / n * 0.8; }
+        else wt = 0;
+    }
+    _GiCube0[id] = e[0]; _GiCube1[id] = e[1]; _GiCube2[id] = e[2];
+    _GiCube3[id] = e[3]; _GiCube4[id] = e[4]; _GiCube5[id] = e[5];
+    _GiConf[id] = wt;
+}

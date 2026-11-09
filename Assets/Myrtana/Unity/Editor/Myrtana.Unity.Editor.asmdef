@@ -1,0 +1,14 @@
+{
+    "name": "Myrtana.Unity.Editor",
+    "rootNamespace": "Myrtana.Unity.Editor",
+    "references": ["Myrtana.Core", "Myrtana.Rules", "Myrtana.Story", "Myrtana.Session", "Myrtana.Import.G3", "Myrtana.Unity", "G3.Formats", "G3.Unity", "G3.Unity.Editor"],
+    "includePlatforms": ["Editor"],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

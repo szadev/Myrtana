@@ -1,0 +1,22 @@
+{
+  "name": "erzofen_delivery",
+  "verifies": "story-4 #4: with the five artefacts and Adanos_DestroyArtefacts Running the Erzofen (ore furnace) offers the delivery topic",
+  "fresh": true,
+  "timeout": 120,
+  "notes": "FILLER31 gives the artefacts away, closes Innos_Contact/Beliar_Contact and sets the chapter (dialogs/Erzofen.json).",
+  "steps": [
+    "safe; god; time 12",
+    "give It_Artefact_Amulet; give It_Artefact_Crown; give It_Artefact_Ring_01; give It_Artefact_Ring_02; give It_Artefact_Robe",
+    "quest Adanos_DestroyArtefacts Running; flag Burn_Ofen",
+    "tp spot=erzofen.stand",
+    "look spot:erzofen",
+    "talk Erzofen",
+    "expect dialog",
+    "probe hero",
+    "choose FILLER31",
+    "lines",
+    "probe hero",
+    "expect has:It_Artefact_Crown=0; expect flag:Adanos_chosen; expect quest:Adanos_DestroyArtefacts=Success",
+    "abort"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "fix108_slope_ground",
+  "verifies": "fix-108 [owner, Demo_2026-10-18c]: deer on a mountain slope floated / stood on cliff faces as if without gravity. A deer and a wolf on the ~42° slope at (497.1, 109.06, -44.6) (G3Cli collision column: 0.77 m/m in x, 0.5 m/m in z) stand with their feet on the collision floor (|gap| <= 5 cm) idle and walking across it; a deer put on the 65° face at (495.1, 106.46, -44.6) beside Deer#bb7c728e's G3 spawn (494.96, 105.97, -45.28: 67°) slides down onto walkable floor (G3 slide mode beyond SteepGroundAngleMax 49°); the fix-99 cave floor is still the floor under the Reddock cave roof",
+  "fresh": true,
+  "timeout": 300,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp 500.1,111.3,-40.6",
+    "wait 3",
+    "spawn Deer attitude=neutral near=497.1,109.06,-44.6 dist=0.5 as=d",
+    "spawn Wolf attitude=neutral near=498.1,109.83,-44.6 dist=0.5 as=w",
+    "calm 40",
+    "slopeground $d at=497.1,109.06,-44.6 idle=5 walkto=499.1,109.4,-48.6 secs=10",
+    "expect npcfootgap:$d<=0.05",
+    "expect npcfootgap:$d>=-0.05",
+    "slopeground $w at=498.1,109.83,-44.6 idle=5 walkto=496.1,107.9,-47.6 secs=10",
+    "expect npcfootgap:$w<=0.05",
+    "expect npcfootgap:$w>=-0.05",
+    "shot fix108_slope_deer look=$d",
+    "slopeground $d at=495.1,106.46,-44.6 idle=6 slide=1",
+    "expect npcslope:$d<=54",
+    "shot fix108_slope_slid look=$d",
+    "tp 706.52,33.95,-77.06",
+    "wait until=navat:706.52,33.90,-77.06 timeout=90",
+    "spawn Deer attitude=neutral near=706.52,33.9,-77.06 dist=0.5 as=c",
+    "calm 40",
+    "slopeground $c at=706.52,33.95,-77.06 idle=4",
+    "expect npcfootgap:$c<=0.05",
+    "expect npcfootgap:$c>=-0.05"
+  ],
+  "notes": "Foot gap = feet height minus the collision surface nearest them in the column under the body's origin (its own ray, ScenarioRunner.Fix108 NpcFootGap). G3 PutToGround puts a body on the floor of a vertical ray under its origin and does not tilt animals, so on a slope a long body's downhill legs hang over the ground by about half its length x tan(slope) also in G3; what made the deer look weightless were bodies kept on 60-70° faces (spawned there, wandered up them: no slope limit off the NavMesh) and heights from a NavMesh point or the spawn's height. Rules: G3.Player.NpcGroundRules (tests NpcGroundRulesTests)."
+}

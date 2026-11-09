@@ -1,0 +1,28 @@
+{
+  "name": "fix93_npc_evade",
+  "verifies": "fix-93: an NPC walking into the standing hero goes round him instead of through him (G3 CP 1.75 gCNavigationAdmin::CheckAllControlledDCCs -> gCNavigationMap::CorrectDCCPositions -> CalcPreferedStandInterPose: an inter pose beside him at 1.25 x the radii, perpendicular to the walk, the side kept in NPCEvadeSwitch; the other side when that one is blocked); with the hero standing on its goal it stops at him (StopMovement), never inside him, nobody is shoved. Ardea: Hamlar (human), then a wolf (creature).",
+  "fresh": true,
+  "timeout": 180,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp pos=906.0,49.8,-125.0",
+    "calm radius=60",
+    "wait 1",
+    "log -- Hamlar walks through the hero's spot to 5 m behind him: goes round",
+    "npcpass Hamlar dist=5 expect=round",
+    "expect npcdetours>=1",
+    "log -- again: the same side (NPCEvadeSwitch keeps it per body)",
+    "npcpass Hamlar dist=5 expect=round",
+    "log -- the hero stands on Hamlar's goal: Hamlar stops at him",
+    "npcpass Hamlar dist=5 expect=wait secs=8",
+    "shot fix93_hamlar_waits look=npc:Hamlar",
+    "log -- a creature",
+    "tp pos=906.0,49.8,-125.0",
+    "spawn Wolf attitude=neutral dist=6 side=front as=w1",
+    "calm radius=60",
+    "wait 2",
+    "npcpass $w1 dist=5 expect=round speed=1.6",
+    "expect npcdetours>=3"
+  ],
+  "notes": "npcpass = ScenarioRunner.Fix93: the NPC view's walker walks (its routine paused) while the hero stands; contact = the NPC's CombatBody.Footprint + the hero's controller radius. A follower walking to the hero, and a fight watcher walking to its fighter, do not evade that target (G3 skips the entity the NPC walks to) — they stop at contact. fix-105 (r40: 'arrived False, closest 1.94 m, axis 0 (no open line on the NavMesh), plan straight line'): beside Hamlar's pacing spot the hero stood where no axis through him was open NavMesh, so Hamlar's walk was a straight line that never met him; both parts now start at 906.0,49.8,-125.0 east of Ardea, where all 8 axes through the hero are open NavMesh (881.3,-140.0 of the wolf part had none: the tp slid 3 m down a 12.6° slope off it, the wolf walked a straight line and timed out; npcpass puts the NPC at its start). The wolf is calmed after its spawn (r41: spawned after 'calm' it went for Hamlar 16 m away). The hero's body blocks NPC walks by his controller radius 0.35 m (CombatBody.WalkBlock; it was his 0.24 m hit capsule: Hamlar came to 0.51 m of the 0.62 m contact). Walking NPCs passing each other (G3 CalcMoveInterPose) and NPC-NPC body collision are not ported."
+}

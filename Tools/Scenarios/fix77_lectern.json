@@ -1,0 +1,27 @@
+{
+  "name": "fix77_lectern",
+  "verifies": "fix-77: reading an 'ancient wisdom' bookstand raises INT once (G3 BS_BookOfFlood: AB 3 / 5 points) after the two pages are read aloud and prints the HUD raise 'Древнее знание + n = value' (PSPlayerMemory::PrintAddValue); the stand is used up (a second read says 'nothing new', no second bonus) and that survives a save/load",
+  "fresh": true,
+  "autodialog": false,
+  "timeout": 240,
+  "steps": [
+    "safe; god; notips; time 12",
+    "attr INT 10",
+    "tp obj:G3_Object_Interact_Bookstand_AncientWisdom_01 dist=1.5",
+    "wait 1",
+    "use obj:G3_Object_Interact_Bookstand_AncientWisdom_01",
+    "expect attr:INT>=13",
+    "expect attr:INT<=15",
+    "expect raisemsg:INT=True",
+    "expect hudmsg~ + ",
+    "shot fix77_lectern_message",
+    "save slot=fix77_lectern",
+    "load slot=fix77_lectern",
+    "attr INT 10",
+    "tp obj:G3_Object_Interact_Bookstand_AncientWisdom_01 dist=1.5",
+    "wait 1",
+    "use obj:G3_Object_Interact_Bookstand_AncientWisdom_01",
+    "expect attr:INT=10"
+  ],
+  "notes": "The second read uses the same (nearest) stand: G3 marks it UsedByPlayer, so it only says BS_NothingNew. The message appears when the hero has finished reading, before he steps back (G3 order: _AI_SaySVM pages, then AddIntelligence). Stone plates (G3_Object_Interact_Stoneplate_AncientWisdom_01) and the alchemy/smith stands (BS_Alchemy/BS_Smith: ALC/SMT) take the same path."
+}

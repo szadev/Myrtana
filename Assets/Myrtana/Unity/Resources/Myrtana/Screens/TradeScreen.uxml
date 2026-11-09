@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <Style src="Screens.uss" />
+    <ui:VisualElement name="trade-screen" class="screen">
+        <ui:Label name="screen-title" class="screen-title" />
+        <ui:VisualElement class="screen-body">
+            <ui:VisualElement class="screen-column">
+                <ui:VisualElement class="screen-header">
+                    <ui:Label name="merchant-name" class="screen-section-title" />
+                    <ui:Label name="merchant-gold" class="screen-gold" />
+                </ui:VisualElement>
+                <ui:ScrollView name="merchant-list" class="trade-list" />
+            </ui:VisualElement>
+            <ui:VisualElement class="screen-column">
+                <ui:VisualElement class="screen-header">
+                    <ui:Label text="" class="screen-section-title" />
+                    <ui:Label name="hero-gold" class="screen-gold" />
+                </ui:VisualElement>
+                <ui:ScrollView name="hero-list" class="trade-list" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:Label name="screen-hint" class="screen-hint" />
+    </ui:VisualElement>
+</ui:UXML>

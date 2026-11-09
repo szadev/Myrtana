@@ -1,0 +1,7 @@
+{
+  "v2DetailFadeStart": 20.0,
+  "v2DetailFadeEnd": 60.0,
+  "v2DetailFar": 0.0,
+  "v2RockTriplanar": false,
+  "v2SsaoFalloff": 60.0
+}

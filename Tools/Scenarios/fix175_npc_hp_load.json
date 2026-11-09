@@ -1,0 +1,29 @@
+{
+  "name": "fix175_npc_hp_load",
+  "verifies": "fix-175 (owner build 21a: 'after loading a save a beast I left with little health is at full health again'). G3 CP 1.75: the save keeps an NPC's HP and nothing regenerates it out of a fight, but every NPC entering the processing range is refilled (OnEnterProcessingRange -> RefreshHitPoints: HP and SP to max, MP kept), and after a load every NPC near the hero enters it again (eCEntity::ReadV83 never restores the range bit; gCSession::Start runs frames with the game running). Port option 'Keep wounds after load' (Video 140, [owner] default Yes) skips that first refill for NPCs wounded in range at the save. Runs with the menu's options (default Yes): the hurt wolf stays hurt while the hero stands by, keeps its 30 HP over the save/load, and is full again after the hero went away and came back (G3 streaming refill)",
+  "fresh": true,
+  "timeout": 240,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp Montera_Wolf_01#0c6fefe2 dist=8",
+    "calm 80",
+    "wait 2",
+    "set max from=hpmax:Montera_Wolf_01#0c6fefe2",
+    "hp Montera_Wolf_01#0c6fefe2 30",
+    "wait 3",
+    "expect hp:Montera_Wolf_01#0c6fefe2=30",
+    "save slot=fix175_hp",
+    "load slot=fix175_hp",
+    "safe; god; calm 80",
+    "wait 3",
+    "expect hp:Montera_Wolf_01#0c6fefe2=30",
+    "tp Gorn dist=4",
+    "wait 5",
+    "expect hp:Montera_Wolf_01#0c6fefe2=30",
+    "tp Montera_Wolf_01#0c6fefe2 dist=8",
+    "calm 80",
+    "wait 4",
+    "expect hp:Montera_Wolf_01#0c6fefe2=$max"
+  ],
+  "notes": "With the option off (G3) the step after the load reads $max instead of 30. The refill comes with the wolf's view being bound again (NpcViewManager: Abstract -> Near/Active raises NpcSimulation.EnteredRange; NpcLifeServices.EnterProcessingRange calls ActorVitals.RefreshHitPoints on the next tick, unless the option and the save's 'life.wounded' list name it, once). Our processing range is the view radius (160 m + 10 m hysteresis): the Gorn step assumes Gorn (Ardea) is farther than that from Montera. A knocked-out NPC is refilled too and keeps lying; a fighting NPC is left alone [interp]."
+}

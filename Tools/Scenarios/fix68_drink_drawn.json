@@ -1,0 +1,21 @@
+{
+  "name": "fix68_drink_drawn",
+  "verifies": "fix-68 #1: a potion drunk with the sword drawn: the sword leaves the hand at once (no sheathe motion), the hero drinks with the use motion, the potion is used, and the sword is back in the hand after (no draw motion; G3 PS_QuickUse -> _AI_UseInventoryItem -> _AI_HoldInventoryItems). Without a weapon the drink is as before.",
+  "fresh": true,
+  "timeout": 90,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_1; calm radius=60",
+    "give It_Potion_Health 2",
+    "draw",
+    "expect inhand",
+    "eat It_Potion_Health",
+    "expect drawn",
+    "expect inhand",
+    "expect !stowed",
+    "sheathe",
+    "eat It_Potion_Health",
+    "expect !drawn"
+  ],
+  "notes": "The eat op fails by itself when the weapon was drawn and did not leave the hand during the use, or is not back after. Log line: 'eat It_Potion_Health: 2 -> 1, weapon stowed True, in the hand meanwhile False, drawn after True'."
+}

@@ -1,0 +1,19 @@
+{
+  "name": "summon_fight_end",
+  "verifies": "polish-3 #3: an NPC mage's summoned skeleton dies when the mage's fight ends (ZS_Attack_End)",
+  "fresh": true,
+  "timeout": 120,
+  "notes": "runner-16: a creature ends when ITS OWN fight ends (SummonService.EndFinishedNpcSummons), so disengage all (Ningal alone leaves the skeleton fighting the hero).",
+  "steps": [
+    "safe; god; time 12",
+    "tp npc:Ningal dist=8",
+    "calm radius=50 except=Ningal",
+    "engage Ningal hero reason=Duel",
+    "wait until=summons:Ningal>0 timeout=30",
+    "probe Ningal",
+    "wait 4; disengage",
+    "wait 3",
+    "probe Ningal",
+    "wait until=summons:Ningal=0 timeout=10"
+  ]
+}

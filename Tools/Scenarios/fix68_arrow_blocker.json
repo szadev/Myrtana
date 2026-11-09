@@ -1,0 +1,24 @@
+{
+  "name": "fix68_arrow_blocker",
+  "verifies": "fix-68 #4: an orc archer shoots the hero with another orc in the line of fire: the arrows stick in that orc (the first body on the path), not in the hero; misses stick in the level",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; notips; time 12",
+    "tp spot=flat_field_1; calm radius=80",
+    "hp hero 2000 max=2000",
+    "spawn Orc_Scout_02 attitude=neutral dist=14 side=front as=archer",
+    "spawn Orc_Warrior_01 attitude=neutral dist=5 side=front as=wall",
+    "freeze only=$wall",
+    "hp $wall 5000",
+    "touchwatch",
+    "engage $archer hero",
+    "wait 40 until=arrowhits:$wall>=2 soft=1",
+    "expect arrowhits:$wall>=1",
+    "expect arrowhits:hero=0",
+    "log arrows in the level: see the arrowlevel probe",
+    "expect arrowlevel>=0",
+    "touchwatch off"
+  ],
+  "notes": "The wall orc is frozen 5 m in front of the hero, the archer 14 m on the same line; NPC shots are aimed at the hero at release and fly straight (fix-93), so they cross the wall orc. Its damage follows G3's friendly-fire gates (a non-target Friendly/Neutral victim of an NPC projectile takes none). If the archer walks around the wall, arrowhits:hero can grow legitimately: check the log positions."
+}

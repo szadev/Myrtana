@@ -1,0 +1,14 @@
+{
+    "name": "Myrtana.Session",
+    "rootNamespace": "Myrtana.Session",
+    "references": ["Myrtana.Core", "Myrtana.Rules", "Myrtana.Simulation", "Myrtana.Story"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

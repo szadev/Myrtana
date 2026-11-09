@@ -1,0 +1,20 @@
+{
+  "name": "fix68_corpse_focus",
+  "verifies": "fix-68 #6: a dead body is focusable while it has loot and not once it is emptied (G3 gCFocus_PS::FindFocusEntity skips a dead NPC whose inventory has nothing lootable)",
+  "fresh": true,
+  "timeout": 60,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_1; calm radius=60",
+    "spawn Kent attitude=neutral dist=1.5 as=v",
+    "kill $v hero",
+    "wait 2",
+    "look $v",
+    "wait 1 until=ifocus=$v soft=1",
+    "loot $v",
+    "look $v",
+    "wait 0.5",
+    "expect ifocus!=$v"
+  ],
+  "notes": "The first ifocus check is soft: a body that carries nothing is never focusable."
+}

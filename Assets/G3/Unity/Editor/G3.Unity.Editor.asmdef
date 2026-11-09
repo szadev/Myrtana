@@ -1,0 +1,27 @@
+{
+    "name": "G3.Unity.Editor",
+    "rootNamespace": "G3.Unity.Editor",
+    "references": [
+        "G3.Formats",
+        "G3.Unity",
+        "G3.Audio.Logic",
+        "G3.Player.Logic",
+        "G3.Effects.Logic",
+        "G3.Weather.Logic",
+        "Unity.RenderPipelines.Universal.Runtime",
+        "Unity.RenderPipelines.Universal.Editor",
+        "Unity.RenderPipelines.Core.Runtime",
+        "Unity.RenderPipelines.Core.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

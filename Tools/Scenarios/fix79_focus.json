@@ -1,0 +1,29 @@
+{
+  "name": "fix79_focus",
+  "verifies": "fix-79: (1) the focus name sits where G3 puts it (gCGUIEntityRenderer::CalcTextRect: pivot + up x the entity's bounds height, then 10 cm along the camera up): a stool 0.66 m, a chest (G3_Chest_Body_Chest mesh) 0.89 m over the pivot; (2) the port option 'Focus decorative objects' = No skips seats (and the looping activities) but keeps chests",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp pos=624.5,79.5,551.5",
+    "decorfocus on=1",
+    "tp obj:G3_Object_Interact_Stool_01 dist=1.2",
+    "look obj:G3_Object_Interact_Stool_01",
+    "wait 1.5 until=ifocusobj~Stool",
+    "expect ifocusobj~Stool",
+    "expect focuslift>=0.6",
+    "expect focuslift<=0.75",
+    "decorfocus on=0",
+    "wait 0.5",
+    "expect ifocusdecor=False",
+    "expect ifocusobj!=G3_Object_Interact_Stool_01",
+    "tp obj:G3_Object_Interact_Animated_Chest_01 dist=1.5",
+    "look obj:G3_Object_Interact_Animated_Chest_01",
+    "wait 1.5 until=ifocusobj~Chest",
+    "expect ifocusobj~Chest_01",
+    "expect focuslift>=0.84",
+    "expect focuslift<=0.94",
+    "decorfocus on=1"
+  ],
+  "notes": "Expected heights from the CP 1.75 meshes (G3_Object_Interact_Stool_01.xcmsh Y 0..66 cm, G3_Chest_Body_Chest.xact mesh Y 0..89 cm; both entities FocusNameType Entity, offsets 0). Before fix-79 the chest's name sat 40 cm over its highest bone (lid, ~0.52 m). The option is restored at the end of the run."
+}

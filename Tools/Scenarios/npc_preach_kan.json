@@ -1,0 +1,17 @@
+{
+  "name": "npc_preach_kan",
+  "verifies": "par-npc2 #31: Kan (Faring, Preach point, voice Orc_Boss_Hard with Speech_00..09) preaches Speech_00..09 (7 s each) and sends routine NPCs within 20 m to free Listener points (needs a content re-import: Listener points near Preach points)",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; god; time 10",
+    "tp pos=650,575",
+    "wait 5",
+    "npctask Kan",
+    "shot scn_npc_preach_kan look=Kan",
+    "wait 30",
+    "npctask Kan",
+    "wait 45",
+    "npctask Kan"
+  ]
+}

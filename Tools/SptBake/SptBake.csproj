@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    SptBake: offline generator for the original Gothic 3 tree meshes. Runs the SpeedTreeRT 4.0 code that is statically
+    linked into the user's own Engine.dll (CP 1.75) and writes neutral .g3tree mesh files (Docs/formats-speedtree.md §8).
+    Must be a 32-bit process: Engine.dll is x86 and is mapped at its preferred base 0x10000000.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <PlatformTarget>x86</PlatformTarget>
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+    <SelfContained>false</SelfContained>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <!-- Engine-free sources shared with Unity: pak reader, .spt decoder, baked-tree format. -->
+  <ItemGroup>
+    <Compile Include="../../Assets/G3/Formats/Pak/PakArchive.cs" />
+    <Compile Include="../../Assets/G3/Formats/G3Install.cs" />
+    <Compile Include="../../Assets/G3/Formats/Trees/*.cs" />
+  </ItemGroup>
+
+</Project>

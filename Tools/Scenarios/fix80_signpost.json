@@ -1,0 +1,28 @@
+{
+  "name": "fix80_signpost",
+  "verifies": "fix-80 #1: a signpost arm (G3 Sign_<Place> board, gCInteraction_PS UseType None) is focused like in G3 and shows its destination (FO_Sign_<Place>: Фаринг, Монтера …) just above the board",
+  "fresh": true,
+  "timeout": 150,
+  "steps": [
+    "safe; god; notips; time 12",
+    "lang text=Russian",
+    "signpost Sign_Faring",
+    "wait 3 until=signfocus~Sign_",
+    "expect signfocus~Sign_",
+    "expect signtext!=-",
+    "expect signresolved",
+    "expect signanchor>=0.15",
+    "expect signanchor<=0.5",
+    "shot name=fix80_signpost_faring",
+    "expect signfocus~Sign_",
+    "signpost Sign_Montera",
+    "wait 3 until=signfocus~Sign_",
+    "expect signtext!=-",
+    "expect signresolved",
+    "shot name=fix80_signpost_montera",
+    "lang text=English",
+    "wait 1",
+    "expect signresolved"
+  ],
+  "notes": "Needs a content reimport (interactiveObjects.json with kind Sign, focusHeight ~0.26). The board's origin is its middle; G3 hangs the name at (0, bounds height, 0) above it. Several arms share a post: the focus takes the one the hero faces most directly, so signfocus may be another Sign_ arm of that post. Use on a signpost does nothing (HeroObjectUse.Use refuses Kind Sign, G3 UseType None)."
+}

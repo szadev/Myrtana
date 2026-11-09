@@ -1,0 +1,32 @@
+{
+  "name": "fix129_camp_fight",
+  "verifies": "fix-129 (owner: on a rebel farm a rebel picked a fight with the hero; after the knock-out all the other rebels attacked): CP AssessFightSound lets a friend of a fighter join only for None/ReactToWeapon/StopFight/ReactToDamage (StopFight), theft (guards) and Intruder/Enemy/Revolution/Murder; Duel, Arena, Kill and every other reason (GateGuard, Angry ...) are watched, and a knock-out in a Duel/Arena/Kill fight is only commented on (AssessDefeat, HasAttackReasonToWatch). The hero fights Daryl's man in a duel and then in a provoked (GateGuard) fight; Daryl watches both and is no enemy of the hero afterwards.",
+  "fresh": true,
+  "timeout": 180,
+  "steps": [
+    "safe fame=0; god; notips; time 12",
+    "tp npc=Daryl dist=12",
+    "bring RebWarrior_05#3ecf9c3f dist=2.5",
+    "wait 2",
+    "engage RebWarrior_05#3ecf9c3f target=hero reason=Duel",
+    "fight RebWarrior_05#3ecf9c3f secs=30",
+    "expect state:RebWarrior_05#3ecf9c3f!=Dead",
+    "wait 3",
+    "expect fighting:Daryl=False",
+    "expect attitude:Daryl!=Hostile",
+    "wait until=state:RebWarrior_05#3ecf9c3f=Alive timeout=40",
+    "restore RebWarrior_05#3ecf9c3f",
+    "bring RebWarrior_05#3ecf9c3f dist=2.5",
+    "wait 1",
+    "engage RebWarrior_05#3ecf9c3f target=hero reason=GateGuard",
+    "wait 4",
+    "expect fighting:RebWarrior_05#3ecf9c3f=True",
+    "expect fighting:Daryl=False",
+    "expect target:Daryl!=player",
+    "fight RebWarrior_05#3ecf9c3f secs=30",
+    "expect state:RebWarrior_05#3ecf9c3f!=Dead",
+    "wait 2",
+    "expect attitude:Daryl!=Hostile"
+  ],
+  "notes": "Before fix-129 the GateGuard (provoke: player.json FILLERX2143 'FuckYou' → Attack Guard) fight fell to the default join group and every rebel friendly to the victim attacked the hero with StopFight. The duel part was already G3 (Duel is watched/commented); it guards against a regression. A knock-out in a non-watched fight (ReactToDamage etc.) still brings the loser's friends in, as in G3 AssessDefeat. fix-135: the fight is held 12 m from Daryl. RebWarrior_05's station is next to Daryl's, and the hero's second swing (already running when the first knocked the rebel out) hit Daryl 0.4 s after the knock-out: ReactToDamage, a fight of its own (G3 DoLogicalDamage hurts a neutral bystander that fights nobody; AssessAgressor fights back), not a join. fix-154: the rebel walks back to his station while he gets up, so he is brought to the hero again before the second fight. Daryl walks over to watch the duel (ZS_WatchFight), so he stands a few metres off at the second knock-out: a knock-out in a GateGuard fight is not a watch reason in CP AssessDefeat (only Duel/Arena/Kill), and a friend of the loser within 20 m + LOS attacks the winner with StopFight (G3 rule, ReactionSelector.Defeat). So the provoked fight is checked while it runs (4 s of the rebel attacking the hero: Daryl only watches, AssessFightSound default case) and not after the knock-out (build-1019b failed on 'fighting:Daryl=False' after the KO: Daryl Fight->player(StopFight))."
+}

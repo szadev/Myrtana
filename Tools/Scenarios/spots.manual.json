@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "generated": "manual (runner-verified places)",
+  "spots": [
+    {
+      "id": "faring_start",
+      "kind": "town",
+      "tags": [
+        "safe",
+        "faring"
+      ],
+      "pos": [
+        568,
+        67.45,
+        576
+      ],
+      "source": "manual",
+      "note": "dev start, Faring lower town (runner-4); orcs attack without Orc fame: use 'safe'"
+    },
+    {
+      "id": "faring_gate_safe",
+      "kind": "town",
+      "tags": [
+        "safe",
+        "faring",
+        "gate"
+      ],
+      "pos": [
+        585,
+        67.3,
+        527
+      ],
+      "source": "manual",
+      "note": "outside the Faring gate; x<584 is a cliff edge (runner-8)",
+      "points": {
+        "alt": [
+          586,
+          67.8,
+          528.5
+        ]
+      }
+    },
+    {
+      "id": "bram_seated",
+      "kind": "npc",
+      "tags": [
+        "seated",
+        "peaceful"
+      ],
+      "npc": "Bram",
+      "pos": [
+        -479.5,
+        6.1,
+        865.0
+      ],
+      "source": "manual",
+      "note": "runner-12: seated look-at verified with Bram (front stays seated)"
+    },
+    {
+      "id": "kent",
+      "kind": "npc",
+      "tags": [
+        "important"
+      ],
+      "npc": "Kent",
+      "pos": [
+        111.5,
+        81.2,
+        705.7
+      ],
+      "source": "manual",
+      "note": "Important info BPANKRATZ31157 (unconditional); forget it to replay"
+    },
+    {
+      "id": "gorn",
+      "kind": "npc",
+      "tags": [
+        "companion"
+      ],
+      "npc": "Gorn",
+      "pos": [
+        880.9,
+        51.4,
+        -106.6
+      ],
+      "source": "manual",
+      "note": "Gorn spawn (Ardea)"
+    },
+    {
+      "id": "grok",
+      "kind": "npc",
+      "tags": [
+        "boss",
+        "geldern"
+      ],
+      "npc": "Grok",
+      "pos": [
+        -542.7,
+        39.3,
+        456.9
+      ],
+      "source": "manual",
+      "note": "Geldern orc boss"
+    },
+    {
+      "id": "ningal",
+      "kind": "npc",
+      "tags": [
+        "mage",
+        "summoner"
+      ],
+      "npc": "Ningal",
+      "pos": [
+        -978.4,
+        39.3,
+        -1437.5
+      ],
+      "source": "manual",
+      "note": "Mora Sul mage (summons)"
+    },
+    {
+      "id": "r12_lake_shallow",
+      "kind": "water",
+      "tags": [
+        "not_deep"
+      ],
+      "pos": [
+        -549.6,
+        5.0,
+        214.9
+      ],
+      "source": "manual",
+      "note": "runner-14: landscape 0.4 m above the water here, NOT a swim spot"
+    }
+  ]
+}

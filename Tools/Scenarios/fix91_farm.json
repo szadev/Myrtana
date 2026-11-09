@@ -1,0 +1,27 @@
+{
+  "name": "fix91_farm",
+  "verifies": "fix-91 #1: on the farm east of Reddock (Kliff_BringHimToJavier, 'Free Kliff from the orcs on the farm') the orc patrol (Reddock_Orc_Warrior_02, Topork, two Reddock_Orc_Scout_02) leaves the smith Kliff alone: he belongs to the rebel enclave Reddock but has no political alignment of his own (gCNPC_PS None), and G3 GetPoliticalAttitude reads the NPC's own alignment (no opinion -> species: Neutral). Before, the enclave's Reb made them enemies on sight and the orcs killed him before the hero could arrive.",
+  "fresh": true,
+  "timeout": 150,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp pos=640,27,-195",
+    "wait 2",
+    "expect state:Kliff=Alive",
+    "expect dist:Kliff<=40",
+    "wait 40",
+    "expect state:Kliff=Alive",
+    "expect fighting:Kliff=False",
+    "expect fighting:Topork=False",
+    "expect fighting:Reddock_Orc_Warrior_02=False",
+    "expect hp:Kliff>0",
+    "log -- the hero walks up to the smith, still no fight",
+    "walkto 663.2,-200.7 secs=15 near=1",
+    "walkto Kliff secs=12 near=3",
+    "wait 10",
+    "expect state:Kliff=Alive",
+    "expect fighting:Kliff=False",
+    "expect fighting:Topork=False"
+  ],
+  "notes": "safe = Orc political fame 80, so the patrol does not treat the hero as an enemy either; the check is NPC vs NPC. Kliff and the patrol stand within 15 m of each other from the start (663,-205 / 665-677,-212..-218). fix-96: walkto runs straight; the farm has a G3 fence (Fence_Start_01/02, End_02, Start_05/06 from 657.5,-207.4 to 661.4,-202.7, then Start_04 .. 669.8,-194.7, Box shapes) with its gate at about 663.2,-200.7: from the tp spot the straight line to Kliff (logstand 666.1,-204.6) ran into the fence end (r38: stuck at 660.8,-202.7), so the hero goes through the gate first."
+}

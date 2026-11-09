@@ -1,0 +1,31 @@
+# Verdicts for `G3Cli story walk --quests` causes (Docs/story-walk.md §5). One line per cause:
+# match<TAB>class<TAB>reason. match = a quest name, or a prefix of the cause text. Classes:
+#   a = port bug (fix it, or say why it stays open), b = also dead/broken in CP 1.75 data/scripts (leave), c = needs an editor check.
+# Checked against the CP 1.75 infos, quests.
+npc:Auftraggeber	b	G3 test quests (folder TestQuests): their NPCs are not in the world
+destination Auftraggeber	b	G3 test quest
+destination TestQuest_01	b	G3 test quest
+npc:FidelCastro	b	G3 test quest
+npc:Opfer	b	G3 test quest
+target Auftraggeber	b	G3 test quest
+target Defeat	b	G3 test quest
+target DriveAway	b	G3 test quest
+target Empfaenger	b	G3 test quest
+target Opfer	b	G3 test quest
+target Talkmaster	b	G3 test quest
+flag:LardoQuest	b	test quest Lardo_SpellQuestTest: nothing sets the flag in infos or scripts
+Lardo_SpellQuestTest	b	test quest (SpellCast type, never started)
+Adanos_OpenGateXardasDead	b	no starter in infos or scripts (Xardas-dead variant of the Adanos gate)
+flag:Xardas_DiesesEndeIstUeberfluessig	b	"this ending is superfluous": set nowhere in CP 1.75
+Reto_BringReinforcements	b	no starter or finisher in infos or scripts
+Diego_GuidetoMS	b	no starter or finisher in infos or scripts
+quest:Bernado_Trade=Running	b	nothing starts Bernado_Trade in infos or scripts: Bernado's FILLER652/653 (Bernado_Pay) are dead
+quest:Ishtar_Killer=Running	b	nothing starts Ishtar_Killer in infos or scripts
+flag:BUG	b	debug flag "BUG": set nowhere (entries disabled by the designers)
+destination _Eusebio	b	quest data names "_Eusebio" (leading underscore); no starter either
+npc:_Eusebio	b	quest data names "_Eusebio"
+gave:_Eusebio	b	quest data names "_Eusebio"
+flag:Tippler_Tapdancer	b	set nowhere in infos or scripts (Tippler's alternative brew is dead)
+target MonasteryBook_Tester	b	reporter typo MonasteryBooik_Tester / target MonasteryBook_Tester, no entity in G3; the chronicles bookstand succeeds the quest (fix-11)
+npc:MonasteryBooik_Tester	b	no entity in G3 or CP world data (see fix-11)
+flag:Faring_Boulder_Success	a	CP OB_Faring_Boulder (lifting G3_Object_Interact_Animated_OrcBoulder_Faring, STR >= 250) sets it; fixed in fix-13 (orc boulders imported, BoulderRules) - needs content import

@@ -1,0 +1,726 @@
+{
+  "version": 1,
+  "generated": "G3Cli spots 2026-10-13 07:31 UTC",
+  "spots": [
+    {
+      "id": "deep_water_bloodfly",
+      "kind": "water",
+      "tags": [
+        "deep",
+        "swim",
+        "bloodfly"
+      ],
+      "pos": [
+        58,
+        -4.5,
+        -1498
+      ],
+      "npc": "Bloodfly#3dc82dc0",
+      "points": {
+        "shore": [
+          46,
+          -3.5,
+          -1493
+        ]
+      },
+      "values": {
+        "depth": 9.2,
+        "surface": -4.5,
+        "shoreDist": 11,
+        "npcDist": 19.1
+      },
+      "note": "deep water nearest to a bloodfly spawn; bring/spawn the fly if npcDist > 40 (G3_World_Oceanmesh_006)",
+      "source": "computed"
+    },
+    {
+      "id": "deep_water_bloodfly_2",
+      "kind": "water",
+      "tags": [
+        "deep",
+        "swim",
+        "bloodfly"
+      ],
+      "pos": [
+        -396.7,
+        2.3,
+        721.4
+      ],
+      "npc": "Bloodfly#ec2e4fce",
+      "points": {
+        "shore": [
+          -410.6,
+          3,
+          715.6
+        ]
+      },
+      "values": {
+        "depth": 4.1,
+        "surface": 2.3,
+        "shoreDist": 13,
+        "npcDist": 19.8
+      },
+      "note": "deep water nearest to a bloodfly spawn; bring/spawn the fly if npcDist > 40 (G3_Myrtana_Rivermesh_08_PART_03)",
+      "source": "computed"
+    },
+    {
+      "id": "deep_water_bloodfly_3",
+      "kind": "water",
+      "tags": [
+        "deep",
+        "swim",
+        "bloodfly"
+      ],
+      "pos": [
+        66,
+        -4.5,
+        -1486
+      ],
+      "npc": "Bloodfly#4ded24ff",
+      "points": {
+        "shore": [
+          46.6,
+          -4.2,
+          -1494
+        ]
+      },
+      "values": {
+        "depth": 12,
+        "surface": -4.5,
+        "shoreDist": 19,
+        "npcDist": 21.7
+      },
+      "note": "deep water nearest to a bloodfly spawn; bring/spawn the fly if npcDist > 40 (G3_World_Oceanmesh_006)",
+      "source": "computed"
+    },
+    {
+      "id": "deep_water_shore",
+      "kind": "water",
+      "tags": [
+        "deep",
+        "swim",
+        "shore"
+      ],
+      "pos": [
+        156.6,
+        74,
+        -238.9
+      ],
+      "npc": "Domenik",
+      "points": {
+        "shore": [
+          162.3,
+          75.5,
+          -244.5
+        ]
+      },
+      "values": {
+        "depth": 4.7,
+        "surface": 74,
+        "shoreDist": 6,
+        "npcDist": 123.1
+      },
+      "note": "deep water a few metres off a dry shore (talk gate while swimming); npc = nearest NPC with an Important info (G3_Myrtana_Rivermesh_15_PART_02)",
+      "source": "computed"
+    },
+    {
+      "id": "deep_water_shore_2",
+      "kind": "water",
+      "tags": [
+        "deep",
+        "swim",
+        "shore"
+      ],
+      "pos": [
+        962,
+        -4.5,
+        -298
+      ],
+      "npc": "Lester",
+      "points": {
+        "shore": [
+          969.4,
+          -2,
+          -294.9
+        ]
+      },
+      "values": {
+        "depth": 4,
+        "surface": -4.5,
+        "shoreDist": 6,
+        "npcDist": 163.8
+      },
+      "note": "deep water a few metres off a dry shore (talk gate while swimming); npc = nearest NPC with an Important info (G3_World_Oceanmesh_069)",
+      "source": "computed"
+    },
+    {
+      "id": "deep_water_shore_3",
+      "kind": "water",
+      "tags": [
+        "deep",
+        "swim",
+        "shore"
+      ],
+      "pos": [
+        220,
+        74,
+        -115.6
+      ],
+      "npc": "Domenik",
+      "points": {
+        "shore": [
+          212,
+          75.2,
+          -115.6
+        ]
+      },
+      "values": {
+        "depth": 3.6,
+        "surface": 74,
+        "shoreDist": 6,
+        "npcDist": 27.5
+      },
+      "note": "deep water a few metres off a dry shore (talk gate while swimming); npc = nearest NPC with an Important info (G3_Myrtana_Rivermesh_15_PART_01)",
+      "source": "computed"
+    },
+    {
+      "id": "wade_ford",
+      "kind": "water",
+      "tags": [
+        "wade"
+      ],
+      "pos": [
+        914.5,
+        -6.2,
+        311.7
+      ],
+      "npc": "Abe",
+      "points": {
+        "shore": [
+          926.5,
+          -2.5,
+          311.7
+        ],
+        "far": [
+          902.5,
+          -3.9,
+          311.7
+        ]
+      },
+      "values": {
+        "column": 1.7,
+        "surface": -4.5,
+        "npcDist": 44.3
+      },
+      "note": "1.5-1.9 m column between two dry banks: a follower crosses shore -> far through wading depth",
+      "source": "computed"
+    },
+    {
+      "id": "wade_ford_2",
+      "kind": "water",
+      "tags": [
+        "wade"
+      ],
+      "pos": [
+        801.1,
+        -6.2,
+        349.8
+      ],
+      "npc": "Abe",
+      "points": {
+        "shore": [
+          811.7,
+          -1.6,
+          360.4
+        ],
+        "far": [
+          796.2,
+          -2.6,
+          344.8
+        ]
+      },
+      "values": {
+        "column": 1.7,
+        "surface": -4.5,
+        "npcDist": 92.6
+      },
+      "note": "1.5-1.9 m column between two dry banks: a follower crosses shore -> far through wading depth",
+      "source": "computed"
+    },
+    {
+      "id": "wade_ford_3",
+      "kind": "water",
+      "tags": [
+        "wade"
+      ],
+      "pos": [
+        866.7,
+        -6.2,
+        230.3
+      ],
+      "npc": "Abe",
+      "points": {
+        "shore": [
+          866.7,
+          -1.9,
+          242.3
+        ],
+        "far": [
+          866.7,
+          -4.1,
+          224.3
+        ]
+      },
+      "values": {
+        "column": 1.7,
+        "surface": -4.5,
+        "npcDist": 123.6
+      },
+      "note": "1.5-1.9 m column between two dry banks: a follower crosses shore -> far through wading depth",
+      "source": "computed"
+    },
+    {
+      "id": "flat_field_1",
+      "kind": "field",
+      "tags": [
+        "flat",
+        "quiet"
+      ],
+      "pos": [
+        -939.8,
+        145,
+        1319.8
+      ],
+      "values": {
+        "npcDist": 247.6,
+        "score": 247.6
+      },
+      "note": "flat (±1.2 m over 20 m), dry, nearest placed NPC 248 m: isolated fights, spawns",
+      "source": "computed"
+    },
+    {
+      "id": "flat_field_2",
+      "kind": "field",
+      "tags": [
+        "flat",
+        "quiet"
+      ],
+      "pos": [
+        -779.8,
+        148.8,
+        1399.8
+      ],
+      "values": {
+        "npcDist": 244.3,
+        "score": 244.3
+      },
+      "note": "flat (±1.2 m over 20 m), dry, nearest placed NPC 244 m: isolated fights, spawns",
+      "source": "computed"
+    },
+    {
+      "id": "flat_field_3",
+      "kind": "field",
+      "tags": [
+        "flat",
+        "quiet"
+      ],
+      "pos": [
+        -619.8,
+        144.3,
+        1359.8
+      ],
+      "values": {
+        "npcDist": 237.7,
+        "score": 237.7
+      },
+      "note": "flat (±1.2 m over 20 m), dry, nearest placed NPC 238 m: isolated fights, spawns",
+      "source": "computed"
+    },
+    {
+      "id": "flat_field_4",
+      "kind": "field",
+      "tags": [
+        "flat",
+        "quiet"
+      ],
+      "pos": [
+        -1019.8,
+        148.2,
+        1119.8
+      ],
+      "values": {
+        "npcDist": 236.8,
+        "score": 236.8
+      },
+      "note": "flat (±1.2 m over 20 m), dry, nearest placed NPC 237 m: isolated fights, spawns",
+      "source": "computed"
+    },
+    {
+      "id": "flat_field_5",
+      "kind": "field",
+      "tags": [
+        "flat",
+        "quiet"
+      ],
+      "pos": [
+        -419.8,
+        160.3,
+        1319.8
+      ],
+      "values": {
+        "npcDist": 229.5,
+        "score": 229.5
+      },
+      "note": "flat (±1.2 m over 20 m), dry, nearest placed NPC 230 m: isolated fights, spawns",
+      "source": "computed"
+    },
+    {
+      "id": "seated_achmed",
+      "kind": "npc",
+      "tags": [
+        "seated",
+        "peaceful",
+        "sitground"
+      ],
+      "pos": [
+        471.5,
+        7.5,
+        -947
+      ],
+      "yaw": -101.2,
+      "npc": "Achmed",
+      "note": "SitGround working point of Achmed (faction Ass, attitude Neutral); tp npc:Achmed at work hours",
+      "source": "computed"
+    },
+    {
+      "id": "seated_anktos",
+      "kind": "npc",
+      "tags": [
+        "seated",
+        "peaceful",
+        "stool"
+      ],
+      "pos": [
+        -994.5,
+        36.8,
+        -1474.8
+      ],
+      "yaw": 139.2,
+      "npc": "Anktos",
+      "note": "Stool working point of Anktos (faction Slave, attitude Neutral); tp npc:Anktos at work hours",
+      "source": "computed"
+    },
+    {
+      "id": "seated_armon",
+      "kind": "npc",
+      "tags": [
+        "seated",
+        "peaceful",
+        "sitcampfire"
+      ],
+      "pos": [
+        453.5,
+        97.3,
+        -9.1
+      ],
+      "yaw": -43,
+      "npc": "Armon",
+      "note": "SitCampfire working point of Armon (faction Reb, attitude Neutral); tp npc:Armon at work hours",
+      "source": "computed"
+    },
+    {
+      "id": "seated_assnovice_03_ba971150",
+      "kind": "npc",
+      "tags": [
+        "seated",
+        "peaceful",
+        "sitground"
+      ],
+      "pos": [
+        -873.7,
+        17.3,
+        -536.1
+      ],
+      "yaw": -52.3,
+      "npc": "AssNovice_03#ba971150",
+      "note": "SitGround working point of AssNovice_03#ba971150 (faction Ass, attitude Neutral); tp npc:AssNovice_03#ba971150 at work hours",
+      "source": "computed"
+    },
+    {
+      "id": "seated_assnovice_04_8be87661",
+      "kind": "npc",
+      "tags": [
+        "seated",
+        "peaceful",
+        "sitcampfire"
+      ],
+      "pos": [
+        -903.4,
+        17.3,
+        -538.3
+      ],
+      "yaw": 136.5,
+      "npc": "AssNovice_04#8be87661",
+      "note": "SitCampfire working point of AssNovice_04#8be87661 (faction Ass, attitude Neutral); tp npc:AssNovice_04#8be87661 at work hours",
+      "source": "computed"
+    },
+    {
+      "id": "seated_assnovice_08",
+      "kind": "npc",
+      "tags": [
+        "seated",
+        "peaceful",
+        "sitground"
+      ],
+      "pos": [
+        -1129.8,
+        20.4,
+        -1371.9
+      ],
+      "yaw": 140.9,
+      "npc": "AssNovice_08",
+      "note": "SitGround working point of AssNovice_08 (faction Ass, attitude Neutral); tp npc:AssNovice_08 at work hours",
+      "source": "computed"
+    },
+    {
+      "id": "campfire",
+      "kind": "fire",
+      "tags": [
+        "campfire",
+        "fire"
+      ],
+      "pos": [
+        -534.3,
+        35.3,
+        416.4
+      ],
+      "points": {
+        "stand": [
+          -535.2,
+          35.3,
+          413.6
+        ]
+      },
+      "note": "campfire 0f9ba245-a899-47f6-a19b-d39ed092acd8 with 3 peaceful SitCampfire NPCs; pos = fire, stand = 3 m off",
+      "source": "computed"
+    },
+    {
+      "id": "campfire_2",
+      "kind": "fire",
+      "tags": [
+        "campfire",
+        "fire"
+      ],
+      "pos": [
+        881.3,
+        51.1,
+        -111.7
+      ],
+      "points": {
+        "stand": [
+          881.8,
+          51.1,
+          -114.7
+        ]
+      },
+      "note": "campfire a1717892-7667-49bb-9e3b-cedb8a110ff2 with 3 peaceful SitCampfire NPCs; pos = fire, stand = 3 m off",
+      "source": "computed"
+    },
+    {
+      "id": "campfire_3",
+      "kind": "fire",
+      "tags": [
+        "campfire",
+        "fire"
+      ],
+      "pos": [
+        -258.1,
+        16.4,
+        862.7
+      ],
+      "points": {
+        "stand": [
+          -257.9,
+          16.4,
+          859.7
+        ]
+      },
+      "note": "campfire c5ff5250-6b24-4ee1-8322-2dd82ed55443 with 3 peaceful SitCampfire NPCs; pos = fire, stand = 3 m off",
+      "source": "computed"
+    },
+    {
+      "id": "wall_torch",
+      "kind": "fire",
+      "tags": [
+        "torch",
+        "fire"
+      ],
+      "pos": [
+        568.9,
+        66.9,
+        567.9
+      ],
+      "points": {
+        "stand": [
+          570.3,
+          64.9,
+          565.3
+        ]
+      },
+      "note": "eff_item_torch_01 on G3_Object_Torch_01, 8 m from the Faring dev start (use 'safe'); tp spot=wall_torch.stand",
+      "source": "computed"
+    },
+    {
+      "id": "wall_torch_2",
+      "kind": "fire",
+      "tags": [
+        "torch",
+        "fire"
+      ],
+      "pos": [
+        576.7,
+        68.2,
+        572
+      ],
+      "points": {
+        "stand": [
+          576.6,
+          66.2,
+          575
+        ]
+      },
+      "note": "eff_item_torch_01 on G3_Object_Torch_01, 10 m from the Faring dev start (use 'safe'); tp spot=wall_torch_2.stand",
+      "source": "computed"
+    },
+    {
+      "id": "wall_torch_3",
+      "kind": "fire",
+      "tags": [
+        "torch",
+        "fire"
+      ],
+      "pos": [
+        571.8,
+        67.1,
+        563.9
+      ],
+      "points": {
+        "stand": [
+          571.8,
+          65.1,
+          566.9
+        ]
+      },
+      "note": "eff_item_torch_01 on G3_Object_Torch_01, 13 m from the Faring dev start (use 'safe'); tp spot=wall_torch_3.stand",
+      "source": "computed"
+    },
+    {
+      "id": "shrine_innos",
+      "kind": "speaker",
+      "tags": [
+        "shrine",
+        "innos"
+      ],
+      "pos": [
+        652.6,
+        83.8,
+        560.8
+      ],
+      "npc": "G3_Object_Interact_Innos_Statue_01",
+      "points": {
+        "stand": [
+          652.1,
+          83.8,
+          562.7
+        ]
+      },
+      "note": "Innos statue (Speaker): talk G3_Object_Interact_Innos_Statue_01",
+      "source": "computed"
+    },
+    {
+      "id": "shrine_innos_2",
+      "kind": "speaker",
+      "tags": [
+        "shrine",
+        "innos"
+      ],
+      "pos": [
+        945.2,
+        8.7,
+        375.3
+      ],
+      "npc": "G3_Object_Interact_Innos_Statue_01",
+      "points": {
+        "stand": [
+          943.4,
+          8.7,
+          376.2
+        ]
+      },
+      "note": "Innos statue (Speaker): talk G3_Object_Interact_Innos_Statue_01",
+      "source": "computed"
+    },
+    {
+      "id": "erzofen",
+      "kind": "speaker",
+      "tags": [
+        "erzofen",
+        "speaker"
+      ],
+      "pos": [
+        613.9,
+        134,
+        1287.7
+      ],
+      "npc": "Erzofen",
+      "points": {
+        "stand": [
+          616.4,
+          134,
+          1287.6
+        ]
+      },
+      "note": "Hammerclan ore furnace (Speaker): talk Erzofen",
+      "source": "computed"
+    },
+    {
+      "id": "cow",
+      "kind": "npc",
+      "tags": [
+        "cow",
+        "animal"
+      ],
+      "pos": [
+        16.3,
+        72.9,
+        253
+      ],
+      "yaw": 0,
+      "npc": "Montera_Cow_01#176689f0",
+      "values": {
+        "threatDist": 61.4
+      },
+      "note": "cow spawn, nearest predator/orc 61 m",
+      "source": "computed"
+    },
+    {
+      "id": "cow_2",
+      "kind": "npc",
+      "tags": [
+        "cow",
+        "animal"
+      ],
+      "pos": [
+        51.5,
+        67.3,
+        265.9
+      ],
+      "yaw": -166.2,
+      "npc": "Montera_Cow_01#94632edf",
+      "values": {
+        "threatDist": 55.2
+      },
+      "note": "cow spawn, nearest predator/orc 55 m",
+      "source": "computed"
+    }
+  ]
+}

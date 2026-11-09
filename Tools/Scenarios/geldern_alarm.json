@@ -1,0 +1,19 @@
+{
+  "name": "geldern_alarm",
+  "loadout": "own",
+  "verifies": "story-4 #8: killing the Geldern orc boss Grok sets Geldern to Attack",
+  "fresh": true,
+  "timeout": 120,
+  "notes": "calm keeps the other Geldern orcs from pulling the focus (runner-12); uncalm before the alarm check so the revolution fights can start. fix-184: Grok is a boss, so the lethal blow kills him at once (G3 IsDeadlyDamage returns 1 right after IsBoss, fix-41); the old Down + finisher steps predate fix-41.",
+  "steps": [
+    "safe; god; time 12; level 3",
+    "tp npc:Grok dist=2",
+    "calm radius=40 except=Grok",
+    "fight Grok hp=5",
+    "expect state:Grok=Dead",
+    "uncalm",
+    "wait 2",
+    "expect enclave:Geldern=Attack",
+    "probe Grok"
+  ]
+}

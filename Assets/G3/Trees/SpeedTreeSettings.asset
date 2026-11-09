@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3215c4745402741418d56e748f42ebb5, type: 3}
+  m_Name: SpeedTreeSettings
+  m_EditorClassIdentifier: G3.Unity::G3.Unity.G3SpeedTreeSettings
+  useOriginalTrees: 1
+  bakeDirectory: Temp/SptBake
+  bakerExecutable: Tools/SptBake/bin/Release/net8.0/win-x86/SptBake.exe
+  lodDistanceScale: 1
+  minFirstTransition: 25
+  minLodStep: 10
+  maxGeometryLevels: 4
+  billboards: 1
+  minBillboardDistance: 120
+  cullScreenHeight: 0.003
+  referenceFieldOfView: 60
+  crossFade: 1
+  crossFadeWidth: 0.15
+  alphaCutoff: 0.32941177
+  barkSmoothness: 0.08
+  leafSmoothness: 0.12
+  windScale: 6
+  leafRock: 0.06
+  leafRockSpeed: 2.2

@@ -1,0 +1,33 @@
+{
+  "name": "chapter_03_roland_teleport",
+  "verifies": "story-walk ch3: Roland (Okara) sends the hero for the teleport stone to the king; the stone lies near Gotha",
+  "fresh": true,
+  "timeout": 900,
+  "notes": "Roland is in sector G3_Myrtana_01_Okara_NPC_01 (gone once Okara is liberated). The stone's world item is at (317.8,66.3,545.8), next to the Gotha demon.",
+  "steps": [
+    "god; notips; safe; time 12; level 25; attr STR 250; attr DEX 150; equip It_1H_Sword_01",
+    "log -- setup: the state after chapter 02",
+    "enclave Ardea liberate",
+    "flag Diego_WarIsLost,Diego_FindXardas",
+    "played BPANKRATZ31451,FILLER65,FILLER925,BPANKRATZ31453,BPANKRATZ31454,BPANKRATZ31455",
+    "flag Gorn_RebsThere",
+    "quest Gorn_ShowReddock Success",
+    "played BPANKRATZ31458,BPANKRATZ31442,BPANKRATZ31445,BPANKRATZ31446,BPANKRATZ31447",
+    "log -- chapter 03",
+    "tp npc:Roland dist=2",
+    "ask Roland BPANKRATZ31024",
+    "expect flag:Roland_HisDuties",
+    "ask Roland BPANKRATZ31084",
+    "expect flag:Roland_Paladin",
+    "ask Roland SKALVERAM3166",
+    "expect quest:PC_Hero_FIndTeleportToKing=Running",
+    "log -- the teleport stone (world item near Gotha)",
+    "tp 317.8,66.3,545.8",
+    "calm 40",
+    "pickup It_Teleport_VangardTempel radius=20",
+    "expect has:It_Teleport_VangardTempel=1",
+    "wait until=quest:PC_Hero_FIndTeleportToKing=Success timeout=5",
+    "uncalm",
+    "shot ch03_stone"
+  ]
+}

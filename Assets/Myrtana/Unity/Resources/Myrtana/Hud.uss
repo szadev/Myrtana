@@ -1,0 +1,82 @@
+/* Clean modern look first (owner decision §14); a G3-style skin comes later. */
+
+.hud {
+    position: absolute;
+    left: 0; top: 0; right: 0; bottom: 0;
+}
+
+.interact-prompt {
+    position: absolute;
+    left: 0; right: 0; bottom: 30%;
+    -unity-text-align: middle-center;
+    font-size: 26px;
+    color: rgb(240, 232, 210);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.hud-message {
+    position: absolute;
+    left: 0; right: 0; top: 12%;
+    -unity-text-align: middle-center;
+    font-size: 28px;
+    color: rgb(245, 225, 170);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.95);
+}
+
+.dialog {
+    display: none; /* shown only by PlainDialogScreen; the G3 dialog has its own panel */
+    position: absolute;
+    left: 18%; right: 18%; bottom: 4%;
+    padding: 18px 26px 14px 26px;
+    background-color: rgba(12, 10, 8, 0.78);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgba(200, 170, 110, 0.45);
+}
+
+.dialog-speaker {
+    font-size: 22px;
+    -unity-font-style: bold;
+    color: rgb(222, 184, 112);
+    margin-bottom: 6px;
+}
+
+.dialog-line {
+    font-size: 26px;
+    color: rgb(245, 240, 228);
+    white-space: normal;
+    min-height: 34px;
+}
+
+.dialog-options {
+    max-height: 420px;
+}
+
+.dialog-option {
+    font-size: 24px;
+    color: rgb(225, 218, 200);
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    -unity-text-align: middle-left;
+    white-space: normal;
+    padding: 4px 10px;
+    margin: 1px 0;
+    border-radius: 4px;
+}
+
+.dialog-option:hover,
+.dialog-option--selected {
+    background-color: rgba(200, 160, 90, 0.28);
+    color: rgb(255, 250, 235);
+}
+
+.dialog-option--exit {
+    color: rgb(170, 160, 145);
+}
+
+.dialog-hint {
+    font-size: 15px;
+    color: rgb(150, 142, 128);
+    margin-top: 8px;
+    -unity-text-align: middle-right;
+}

@@ -1,0 +1,33 @@
+{
+  "name": "fix155_crash_recovery",
+  "verifies": "fix-155 [owner]: crash recovery - the hidden recovery snapshot (port option 'Crash recovery', default Yes) is written through the save system, serialized on the main thread under ~5 ms, never listed in the load list nor taken by Continue; after an unclean exit (simulated here) the confirm box asks 'Игра завершилась некорректно. Восстановить прогресс от <date>?' only while the snapshot is newer than every normal save; No discards it, Yes loads it as the visible slot 'recovered' (Восстановление), which Continue then picks",
+  "fresh": true,
+  "timeout": 120,
+  "steps": [
+    "safe; notips; time 12; lang Russian Russian",
+    "tp spot=flat_field_1; calm radius=60",
+    "autosave every=0",
+    "recovery every=600",
+    "expect saveblock=none",
+    "autosave quick=1",
+    "wait 1.2",
+    "recovery",
+    "expect recovery:exists",
+    "expect recovery:ms<5",
+    "expect !recovery:listed",
+    "expect !recovery:continue",
+    "expect continue:slot=quick",
+    "recovery offer=1",
+    "expect recovery:asked",
+    "wait 0.5",
+    "shot name=fix155_prompt_ru",
+    "recovery reply=no",
+    "expect !recovery:exists",
+    "recovery offer=1",
+    "expect !recovery:asked",
+    "menu page=close",
+    "autosave every=600",
+    "recovery every=120"
+  ],
+  "notes": "One question per run: after the first answer (No) the offer is not repeated (expect !recovery:asked), as at the title. The Yes path (copy to 'recovered', load, Continue picks it) runs in fix155_crash_recovery_yes. A real crash test: start the game (title), play > 2 min (log '[Myrtana] recovery snapshot ... KB: serialized in X ms'), kill the process (Task Manager), start again: the title asks; Esc / No discards, Yes loads."
+}

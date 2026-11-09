@@ -1,0 +1,31 @@
+{
+  "name": "fix114_kapdun_stone",
+  "verifies": "fix-114: world items on furniture are focusable and can be taken. G3's furniture collision shapes are coarse volumes (Kap Dun shed: G3_Object_Shelf_01 is one Box shape and the teleport stone It_Teleport_KapDun (world item f63af0e3) lies inside it), so the focus ray (fix-104) must not count the solid shape an item lies on or in as a blocker (FocusSight.HoldsItem). Test shelf: an item inside a solid test box is focused; a wall between hero and item still blocks. Then the real stone in Kap Dun is focused and taken.",
+  "fresh": true,
+  "timeout": 180,
+  "steps": [
+    "safe; god; notips; time 12",
+    "tp spot=flat_field_1; calm radius=60",
+    "lositem item=It_Gold dist=1.2",
+    "wait 1 until=ifocusitem=item",
+    "expect ifocusitem=item",
+    "losshelf",
+    "wait 0.5",
+    "expect ifocusitem=item",
+    "shot name=fix114_testshelf",
+    "loswall item=1",
+    "wait 0.5",
+    "expect ifocusitem=-",
+    "losclear",
+    "tp pos=471.13,40.1,-316.0",
+    "calm radius=40",
+    "look 470.77,41.2,-314.86",
+    "wait 2 until=ifocusitem=f63af0e3-b957-4330-9c31-20dd07a79a65",
+    "expect ifocusitem=f63af0e3-b957-4330-9c31-20dd07a79a65",
+    "shot name=fix114_kapdun_stone",
+    "expect has:It_Teleport_KapDun=0",
+    "pickup It_Teleport_KapDun radius=3",
+    "wait 1",
+    "expect has:It_Teleport_KapDun=1"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+    "name": "Myrtana.Simulation",
+    "rootNamespace": "Myrtana.Simulation",
+    "references": ["Myrtana.Core", "Myrtana.Rules"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

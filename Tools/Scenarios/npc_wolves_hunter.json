@@ -1,0 +1,30 @@
+{
+  "name": "npc_wolves_hunter",
+  "verifies": "par-npc: NPC-vs-NPC perception. A calmed hunter: a wolf within 10 m threatens it (task Threaten, the Say growl) and attacks after 5 s; then a free hunter attacks a wolf pack on sight (Hostile slot, 20 m) with a DieMonster shout, the wolves fight back; the winner says MonsterKilled",
+  "fresh": true,
+  "timeout": 150,
+  "notes": "Spawned copies keep their species and faction (DevNpcs.CreatureFrom). Geldern_Wolf_01: wolf, Angry to humans. KingsGuard_01: rebel human, Hostile to wolves. The hero stands back so the wolves pick the hunter.",
+  "steps": [
+    "safe; god; time 12",
+    "tp spot=flat_field_1; calm radius=80",
+    "spawn KingsGuard_01 attitude=neutral dist=6 as=hunter",
+    "calm only=$hunter",
+    "spawn Geldern_Wolf_01 attitude=neutral dist=14 as=wolf",
+    "tp npc:$hunter dist=14 side=back",
+    "wait 4 until=task:$wolf=Threaten timeout=4",
+    "expect !fighting:$wolf",
+    "probe $wolf",
+    "shot scn_npc_wolf_threatens look=$wolf",
+    "wait 8 until=fighting:$wolf timeout=8",
+    "expect target:$wolf=$hunter",
+    "uncalm",
+    "calm radius=80 except=$hunter,$wolf",
+    "spawn Geldern_Wolf_01 attitude=neutral dist=12 count=2 near=npc:$hunter as=pack",
+    "wait 10 until=fighting:$hunter timeout=10",
+    "probe $hunter",
+    "shot scn_npc_wolves_hunter look=$hunter",
+    "wait 60 until=!fighting:$hunter timeout=60 soft=1",
+    "probe $hunter",
+    "probe $wolf"
+  ]
+}

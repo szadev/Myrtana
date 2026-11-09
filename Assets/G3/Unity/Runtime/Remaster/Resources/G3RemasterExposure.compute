@@ -1,0 +1,94 @@
+// lighting-new (Docs/remaster-world.md section 21, WorldLightNew): histogram auto-exposure with eye adaptation for the
+// "New" lighting. Build: the HDR frame before the grade (after the transparents) sampled every _ExpParams.x pixels, log2
+// luminance into 64 bins over [-14, 4), centre weighted. Adapt: percentile mean (darkest / brightest shares ignored),
+// target EV = adapt x log2(key / mean) + bias clamped, eased towards it (slow brightening, fast darkening), written into a
+// persistent 1x1 texture: r exposure multiplier, g metered mean log2 luminance, b current EV, a target EV.
+#pragma kernel Clear
+#pragma kernel Build
+#pragma kernel Adapt
+
+#define BINS 64
+#define MIN_LOG -14.0
+#define MAX_LOG 4.0
+
+RWStructuredBuffer<uint> _ExpHist;
+RWTexture2D<float4> _ExpState;
+Texture2D<float4> _ExpSource;
+float4 _ExpParams;   // x stride (px), y width, z height, w dt (s)
+float4 _ExpParams2;  // x low share, y high share, z adapt strength, w log2(key)
+float4 _ExpParams3;  // x min EV, y max EV, z bias EV, w 1 = reset (jump to the target)
+float4 _ExpParams4;  // x speed up (EV/s), y speed down (EV/s), z centre weighting
+
+groupshared uint gsBins[BINS];
+
+[numthreads(BINS, 1, 1)]
+void Clear(uint3 id : SV_DispatchThreadID)
+{
+    _ExpHist[id.x] = 0;
+}
+
+[numthreads(16, 16, 1)]
+void Build(uint3 id : SV_DispatchThreadID, uint gi : SV_GroupIndex)
+{
+    if (gi < BINS) gsBins[gi] = 0;
+    GroupMemoryBarrierWithGroupSync();
+    uint2 px = id.xy * (uint)_ExpParams.x + (uint)(_ExpParams.x * 0.5);
+    if (px.x < (uint)_ExpParams.y && px.y < (uint)_ExpParams.z)
+    {
+        float3 c = _ExpSource.Load(int3(px, 0)).rgb;
+        float l = dot(max(c, 0), float3(0.2126, 0.7152, 0.0722));
+        if (!(l >= 0) || l > 65000) l = 0;   // NaN / inf
+        float t = l > 0 ? (log2(l) - MIN_LOG) / (MAX_LOG - MIN_LOG) : 0;
+        uint b = (uint)clamp(t * BINS, 0, BINS - 1);
+        float2 uv = (px + 0.5) / _ExpParams.yz - 0.5;
+        float r = saturate(length(uv) / 0.7071);
+        float w = 1 - saturate(_ExpParams4.z) * r * r;
+        InterlockedAdd(gsBins[b], (uint)(w * 256 + 0.5));
+    }
+    GroupMemoryBarrierWithGroupSync();
+    if (gi < BINS && gsBins[gi] > 0) InterlockedAdd(_ExpHist[gi], gsBins[gi]);
+}
+
+float BinLog(uint b) { return MIN_LOG + (b + 0.5) * (MAX_LOG - MIN_LOG) / BINS; }
+
+[numthreads(BINS, 1, 1)]
+void Adapt(uint3 id : SV_DispatchThreadID)
+{
+    gsBins[id.x] = _ExpHist[id.x];
+    GroupMemoryBarrierWithGroupSync();
+    if (id.x != 0) return;
+    // WorldLightNew.MeanLog
+    float total = 0;
+    [loop] for (uint i = 0; i < BINS; i++) total += gsBins[i];
+    float meanLog = BinLog(BINS / 2);
+    if (total > 0)
+    {
+        float lo = total * saturate(_ExpParams2.x), hi = total * saturate(_ExpParams2.y), acc = 0, sum = 0, ws = 0;
+        [loop] for (uint k = 0; k < BINS; k++)
+        {
+            float b = gsBins[k];
+            float a0 = acc, a1 = acc + b;
+            acc = a1;
+            float take = min(a1, hi) - max(a0, lo);
+            if (take <= 0) continue;
+            sum += take * BinLog(k); ws += take;
+        }
+        if (ws > 0) meanLog = sum / ws;
+    }
+    // WorldLightNew.TargetEv
+    float target = clamp(saturate(_ExpParams2.z) * (_ExpParams2.w - meanLog) + _ExpParams3.z, _ExpParams3.x, _ExpParams3.y);
+    // WorldLightNew.Adapt
+    float4 prev = _ExpState[uint2(0, 0)];
+    float ev = target;
+    float dt = clamp(_ExpParams.w, 0, 0.5);
+    if (_ExpParams3.w < 0.5 && prev.r > 0 && prev.b == prev.b)
+    {
+        ev = prev.b;
+        float d = target - ev;
+        float speed = d > 0 ? _ExpParams4.x : _ExpParams4.y;
+        float ease = d * (1 - exp(-dt * 3));
+        float step = sign(d) * min(abs(ease), speed * dt);
+        ev = abs(step) >= abs(d) ? target : ev + step;
+    }
+    _ExpState[uint2(0, 0)] = float4(exp2(ev), meanLog, ev, target);
+}

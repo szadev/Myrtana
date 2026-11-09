@@ -1,0 +1,12 @@
+{
+  "name": "fix94_loot_title",
+  "verifies": "fix-94: no loot page title is a raw id: G3 gCHUDViewLootPool2 labels the pool with the looted entity's localized FO_ name, empty when there is none (the 23 treasure spots), same as the focus name (fix-88)",
+  "fresh": true,
+  "timeout": 60,
+  "steps": [
+    "safe; god; notips",
+    "expect rawloottitles=0",
+    "expect rawfocusnames>=1"
+  ],
+  "notes": "rawfocusnames counts the objects without an FO_ text (26 at fix-88); their loot titles are empty now instead of '[FO_…]'. Unit test CookFiresTests.LootTitle_SameAsTheFocusName_NothingForAMissingString."
+}

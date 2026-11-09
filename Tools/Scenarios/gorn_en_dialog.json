@@ -1,0 +1,25 @@
+{
+  "name": "gorn_en_dialog",
+  "verifies": "runner-13 leftover: in English the second Talk to Gorn ends at once without a menu — expected or not",
+  "fresh": true,
+  "timeout": 120,
+  "notes": "fix-184: the 2nd Talk opens no dialog - expected (runner-16: Gorn has no other available entry at game start; G3 AssessTalk without infos says an SVM refuse line, fix-158). Language stays English afterwards (lang Russian Russian to switch back). runner-16: lang is stored in PlayerPrefs (LanguagePreferences) - the last step restores Russian; a failing run still restores it only if the run reaches the end (expect failures do continue).",
+  "steps": [
+    "safe; god; time 12",
+    "lang English English",
+    "tp npc:Gorn dist=2",
+    "talk Gorn",
+    "lines",
+    "probe hero",
+    "abort",
+    "wait 1",
+    "talk Gorn",
+    "wait 1",
+    "probe hero",
+    "expect !dialog",
+    "lines",
+    "probe hero",
+    "abort",
+    "lang Russian Russian"
+  ]
+}
