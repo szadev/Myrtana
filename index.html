@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Myrtana: open-source Gothic 3 engine on Unity 6 with a remaster</title>
+<meta name="description" content="Myrtana is a free, open-source Gothic 3 engine rebuilt on Unity 6. It runs the original game from your own copy (Community Patch 1.75) and adds an optional remaster: new lighting, clouds, ground, trees, faces and an HD map.">
+<meta name="keywords" content="Gothic 3, Готика 3, Myrtana, Миртана, remake, ремейк, remaster, ремастер, Unity 6, open source, Community Patch 1.75, Piranha Bytes">
+<link rel="canonical" href="https://szadev.github.io/Myrtana/">
+<link rel="alternate" hreflang="en" href="https://szadev.github.io/Myrtana/">
+<link rel="alternate" hreflang="ru" href="https://szadev.github.io/Myrtana/ru/">
+<link rel="alternate" hreflang="x-default" href="https://szadev.github.io/Myrtana/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Myrtana">
+<meta property="og:title" content="Myrtana: open-source Gothic 3 engine on Unity 6 with a remaster">
+<meta property="og:description" content="Myrtana is a free, open-source Gothic 3 engine rebuilt on Unity 6. It runs the original game from your own copy (Community Patch 1.75) and adds an optional remaster: new lighting, clouds, ground, trees, faces and an HD map.">
+<meta property="og:url" content="https://szadev.github.io/Myrtana/">
+<meta property="og:image" content="https://szadev.github.io/Myrtana/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#14110d">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoGame", "name": "Myrtana", "alternateName": ["Gothic 3 Unity remake", "Готика 3 ремейк"], "description": "Myrtana is a free, open-source Gothic 3 engine rebuilt on Unity 6. It runs the original game from your own copy (Community Patch 1.75) and adds an optional remaster: new lighting, clouds, ground, trees, faces and an HD map.", "url": "https://szadev.github.io/Myrtana/", "image": "https://szadev.github.io/Myrtana/img/og.jpg", "inLanguage": ["en", "ru"], "genre": ["Role-playing game", "Open world"], "gamePlatform": "Windows", "operatingSystem": "Windows 10, Windows 11", "applicationCategory": "Game", "isAccessibleForFree": true, "license": "https://opensource.org/licenses/MIT", "codeRepository": "https://github.com/szadev/Myrtana", "isBasedOn": {"@type": "VideoGame", "name": "Gothic 3"}, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script>
+</head>
+<body>
+<header class="hero" style="background-image:linear-gradient(180deg,rgba(20,17,13,.35),rgba(20,17,13,.55) 60%,#14110d),url('img/hero.jpg')">
+  <nav><span class="logo">Myrtana</span><a class="lang" href="ru/" hreflang="ru">Русский</a></nav>
+  <div class="hero-in">
+    <p class="kicker">Unofficial fan project</p>
+    <h1>Myrtana</h1>
+    <p class="lead">An open-source <b>Gothic 3</b> engine rebuilt on <b>Unity 6</b>. It reads your own copy of the game and plays the whole story on new code, with an optional <b>remaster</b> you can switch on with F7.</p>
+    <p class="btns"><a class="btn primary" href="https://github.com/szadev/Myrtana">Source on GitHub</a><a class="btn" href="#build">How to build</a></p>
+  </div>
+</header>
+<main>
+  <section><h2>What it is</h2><div class="cards"><div class="card"><h3>The whole game</h3><p>World, NPC routines, dialogues, quests, combat, magic, crime and reputation, trading, saves and a UI in the style of the original. Myrtana reads it all from Gothic 3 itself.</p></div><div class="card"><h3>Remaster, on or off</h3><p>Volumetric clouds and new lighting, ground and rock materials, sand and snow, new trees and grass, reworked faces and armour, an HD map. Off by default: then it looks like Community Patch 1.75.</p></div><div class="card"><h3>No game files inside</h3><p>The repository holds only code and tools. A script takes the data from your Steam or GOG install and builds the game on your machine.</p></div><div class="card"><h3>Open to everyone</h3><p>MIT-licensed code. Fix bugs, port features, experiment with the renderer: pull requests are welcome.</p></div></div></section>
+  <section><h2>Original and remaster</h2><p class="note">Each picture: Community Patch 1.75 on the left, the remaster on the right. Click to enlarge.</p><div class="shots"><figure><a href="img/05_ardea_coast.jpg" data-cap="Myrtana: the coast below Ardea, late afternoon"><img src="img/05_ardea_coast.jpg" alt="Gothic 3 / Myrtana: Myrtana: the coast below Ardea, late afternoon" loading="lazy" width="2400" height="708"></a><figcaption>Myrtana: the coast below Ardea, late afternoon</figcaption></figure><figure><a href="img/06_varant_vista.jpg" data-cap="Varant: canyon vista at golden hour"><img src="img/06_varant_vista.jpg" alt="Gothic 3 / Myrtana: Varant: canyon vista at golden hour" loading="lazy" width="2400" height="708"></a><figcaption>Varant: canyon vista at golden hour</figcaption></figure><figure><a href="img/09_faring_keep.jpg" data-cap="Faring: the keep"><img src="img/09_faring_keep.jpg" alt="Gothic 3 / Myrtana: Faring: the keep" loading="lazy" width="2400" height="708"></a><figcaption>Faring: the keep</figcaption></figure><figure><a href="img/11_nordmar_village.jpg" data-cap="Nordmar: the Hammer clan village"><img src="img/11_nordmar_village.jpg" alt="Gothic 3 / Myrtana: Nordmar: the Hammer clan village" loading="lazy" width="2400" height="708"></a><figcaption>Nordmar: the Hammer clan village</figcaption></figure><figure><a href="img/04_varant_sand.jpg" data-cap="Varant: desert ruins at golden hour"><img src="img/04_varant_sand.jpg" alt="Gothic 3 / Myrtana: Varant: desert ruins at golden hour" loading="lazy" width="2400" height="708"></a><figcaption>Varant: desert ruins at golden hour</figcaption></figure><figure><a href="img/07_morasul_tents.jpg" data-cap="Mora Sul: walls and tents"><img src="img/07_morasul_tents.jpg" alt="Gothic 3 / Myrtana: Mora Sul: walls and tents" loading="lazy" width="2400" height="708"></a><figcaption>Mora Sul: walls and tents</figcaption></figure><figure><a href="img/10_nordmar_snow.jpg" data-cap="Nordmar: snowfield with footprints"><img src="img/10_nordmar_snow.jpg" alt="Gothic 3 / Myrtana: Nordmar: snowfield with footprints" loading="lazy" width="2400" height="708"></a><figcaption>Nordmar: snowfield with footprints</figcaption></figure><figure><a href="img/12_ishtar.jpg" data-cap="Ishtar: fortress walls"><img src="img/12_ishtar.jpg" alt="Gothic 3 / Myrtana: Ishtar: fortress walls" loading="lazy" width="2400" height="708"></a><figcaption>Ishtar: fortress walls</figcaption></figure><figure><a href="img/08_varant_canyon.jpg" data-cap="Varant: canyon near the oasis"><img src="img/08_varant_canyon.jpg" alt="Gothic 3 / Myrtana: Varant: canyon near the oasis" loading="lazy" width="2400" height="708"></a><figcaption>Varant: canyon near the oasis</figcaption></figure><figure><a href="img/01_hero_face.jpg" data-cap="The hero's new head"><img src="img/01_hero_face.jpg" alt="Gothic 3 / Myrtana: The hero's new head" loading="lazy" width="2400" height="708"></a><figcaption>The hero's new head</figcaption></figure><figure><a href="img/03_npc_faces.jpg" data-cap="Diego, Gorn, Milten and Lester"><img src="img/03_npc_faces.jpg" alt="Gothic 3 / Myrtana: Diego, Gorn, Milten and Lester" loading="lazy" width="2400" height="708"></a><figcaption>Diego, Gorn, Milten and Lester</figcaption></figure><figure><a href="img/13_map_hd.jpg" data-cap="HD world map, deep zoom on Bakaresh"><img src="img/13_map_hd.jpg" alt="Gothic 3 / Myrtana: HD world map, deep zoom on Bakaresh" loading="lazy" width="2400" height="708"></a><figcaption>HD world map, deep zoom on Bakaresh</figcaption></figure></div></section>
+  <section id="build"><h2>Build it yourself</h2><p>You need Gothic 3 with Community Patch 1.75 (Steam or GOG), Windows 10/11 x64, 16 GB RAM, a DirectX 12 GPU, about 120 GB of free disk space while building, and Unity 6000.6.5f1 (Personal is free).</p><ol class="steps"><li>Install the tools: <code>winget install Microsoft.DotNet.SDK.8 Gyan.FFmpeg Python.Python.3.12</code>, plus the Visual Studio 2022 C++ Build Tools.</li><li>Clone the repository: <code>git clone https://github.com/szadev/Myrtana.git</code></li><li>Run <code>Tools\Setup\setup.cmd</code>. It finds the game and Unity, downloads the ~12 GB remaster pack, converts the videos, imports everything and builds <code>G3World.exe</code>. The first run takes a few hours.</li></ol>
+    <p><a href="https://github.com/szadev/Myrtana#readme">Full instructions, options and troubleshooting are in the README.</a> · <a href="https://github.com/szadev/Myrtana-pack/releases/tag/v1">Remaster pack</a></p></section>
+  <section><h2>Questions</h2><details><summary>Is this a pirated copy of Gothic 3?</summary><p>No. Myrtana contains no game data. Without a legally owned Gothic 3 nothing can be built.</p></details><details><summary>Do I have to use the remaster?</summary><p>No. It is off by default, and you can build without the remaster pack at all (<code>-NoPack</code>).</p></details><details><summary>Which language?</summary><p>Russian and English versions of Gothic 3 are supported: Myrtana uses the texts and speech of your install.</p></details><details><summary>Can I help?</summary><p>Yes: open an issue or a pull request on GitHub. Code lives in <code>Assets/G3</code> (file formats, import) and <code>Assets/Myrtana</code> (game logic, UI).</p></details></section>
+</main>
+<footer><p>Gothic 3 © THQ Nordic GmbH, developed by Piranha Bytes. Myrtana is an unofficial fan project and is not endorsed by them. Source code: MIT. Remaster pack: only for use with a legally owned copy of Gothic 3; rights holders can reach the maintainer through GitHub issues.</p><p><a href="https://github.com/szadev/Myrtana">github.com/szadev/Myrtana</a></p></footer>
+<dialog id="lb"><img alt=""><p></p></dialog>
+<script>
+const lb=document.getElementById('lb');
+document.querySelectorAll('.shots a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();lb.querySelector('img').src=a.href;lb.querySelector('p').textContent=a.dataset.cap;lb.showModal();}));
+lb.addEventListener('click',()=>lb.close());
+</script>
+</body>
+</html>

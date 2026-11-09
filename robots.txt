@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://szadev.github.io/Myrtana/sitemap.xml
